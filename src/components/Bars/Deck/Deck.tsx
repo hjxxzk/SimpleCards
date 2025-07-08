@@ -11,8 +11,8 @@ const Deck = (props: DeckProps) => {
             <div className={styles.deckHeader}>
                 <strong>{props.name}</strong>
                 <div className={styles.deckActions}>
-                    <Pencil className={styles.icon} color="gray" size={18} />
-                    <Trash2 className={styles.icon} color="gray" size={18} onClick={() => { props.deleteDeck?.(props.id) }} />
+                    <Pencil className={styles.edit} color="gray" size={18} />
+                    <Trash2 className={styles.delete} color="gray" size={18} onClick={() => { props.deleteDeck?.(props.id) }} />
                 </div>
             </div>
             <hr className={styles.separator} />
