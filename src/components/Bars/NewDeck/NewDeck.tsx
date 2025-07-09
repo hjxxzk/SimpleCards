@@ -7,7 +7,7 @@ const NewDeck = () => {
 
     return (
         <div className={styles.newDeck}>
-            <Plus color="gray" size={24}></Plus>
+            <Plus color="black" size={24}></Plus>
         </div>
     );
 }

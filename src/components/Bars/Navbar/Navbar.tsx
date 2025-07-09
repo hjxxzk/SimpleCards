@@ -1,30 +1,21 @@
-import { useState } from 'react';
 import useStyles from './Navbar.styles';
 import { CircleUserRound, Menu } from 'lucide-react';
-import Sidebar from '../Sidebar/Sidebar';
 
-const Navbar = () => {
+interface NavbarProps {
+    toggleSidebar: () => void;
+}
+
+const Navbar = (props: NavbarProps) => {
 
     const styles = useStyles();
-    const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
-
-
-    const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
-    match.addEventListener('change', (event) => {
-        if (event.matches) {
-            setIsSidebarVisible(true);
-        };
-    });
 
     return (
         <>
             <div className={styles.navbar}>
-                <Menu className={styles.menu} color="black" size={22} onClick={() => setIsSidebarVisible(!isSidebarVisible)} />
+                <Menu className={styles.menu} color="black" size={22} onClick={() => { props.toggleSidebar() }} />
                 <img src="src\assets\logo.png" alt="Logo" className={styles.logo} />
-                <CircleUserRound className={styles.icon} color="black" size={22} />
+                <CircleUserRound className={styles.icon} color="black" size={26} />
             </div>
-            {isSidebarVisible && <Sidebar />}
         </>
     )
 }

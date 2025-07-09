@@ -1,9 +1,9 @@
 const useStyles = () => {
     return {
-        navbar: "bg-gray-100 px-4 py-2 flex w-screen h-30 md:px-6 lg:h-25 lg:py-15 lg:pl-10 lg:pr-10 justify-between items-center",
-        icon: "cursor-pointer",
-        menu: "lg:max-3xl:hidden",
-        logo: "w-70 h-35 md:w-100 md:h-50 lg:w-100 lg:h-50",
+        navbar: "px-5 md:px-7 lg:px-0 lg:pr-11 py-2 flex w-screen h-25 xs:max-lg:h-30 justify-between items-center",
+        icon: "cursor-pointer hover:stroke-gray-600 active:stroke-gray-700",
+        menu: "lg:hidden cursor-pointer hover:stroke-gray-600 active:stroke-gray-700",
+        logo: "w-70 h-35 sm:max-lg:w-100 sm:max-lg:h-50 lg:w-95 lg:h-50 cursor-pointer pt-3",
     };
 };
 

@@ -1,6 +1,6 @@
 const useStyles = () => {
     return {
-        newDeck: "bg-neutral-200 hover:bg-neutral-300 grow active:bg-amber-200 p-4 flex flex-col items-center justify-center w-full h-38 cursor-pointer rounded-lg",
+        newDeck: "bg-neutral-200 grow hover:shadow-md active:bg-amber-300 transition-shadow duration-300 hover:border-2 hover:border-amber-300 p-4 flex flex-col items-center justify-center w-full h-38 cursor-pointer rounded-lg",
     };
 };
 

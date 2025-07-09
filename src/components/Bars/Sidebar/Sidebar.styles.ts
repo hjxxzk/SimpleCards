@@ -1,8 +1,8 @@
 const useStyles = () => {
     return {
-        sidebar: "bg-gray-100 py-10 px-15 lg:pt-5 pb-25 lg:px-15 w-full lg:w-100 h-full flex flex-col",
-        separator: "my-1 h-0.5 border-t-0 bg-black mt-2 mb-7",
-        decksList: "flex-1 overflow-auto scrollbar-hidden pr-4 items-center mb-15",
+        sidebar: "bg-gray-100 py-10 px-20 sm:max-lg:py-10 sm:max-lg:px-40 lg:pb-18 lg:px-5 lg:ml-5 w-full overflow-hidden absolute w-screen lg:static lg:min-w-90 lg:w-110 h-screen flex flex-col",
+        separator: "h-0.5 border-t-0 bg-black mt-2 mb-7",
+        decksList: "flex-1 overflow-auto scrollbar-hidden items-center lg:mb-15 min-w-64",
     };
 };
 
