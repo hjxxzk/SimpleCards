@@ -20,16 +20,16 @@ const Deck = (props: DeckProps) => {
     }
 
     function confirmDeleteDeck() {
-        props.deleteDeck?.(props.id);
+        props.deleteDeck?.(props._id);
     }
 
     return (
         <div className={styles.deckContainer}>
-            <div className={styles.deck} onClick={() => { navigate(`/${props.id}`) }} >
+            <div className={styles.deck} onClick={() => { navigate(`/${props._id}`) }} >
                 <div className={styles.deckHeader}>
                     <strong>{props.name}</strong>
                     <div className={styles.deckActions}>
-                        <Pencil className={styles.edit} color="gray" size={18} onClick={(event) => { event.stopPropagation(), navigate(`/edit/${props.id}`) }} />
+                        <Pencil className={styles.edit} color="gray" size={18} onClick={(event) => { event.stopPropagation(), navigate(`/edit/${props._id}`) }} />
                         <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                     </div>
                 </div>

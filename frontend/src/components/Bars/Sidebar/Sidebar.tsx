@@ -1,18 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useStyles from "./Sidebar.styles";
 import NewDeck from "../NewDeck/NewDeck";
-import { mockedDeck } from "../Deck/Deck.mock";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
 
 const Sidebar = () => {
 
     const styles = useStyles();
-    const [decks, setDecks] = useState<DeckProps[]>(mockedDeck);
+    const [decks, setDecks] = useState<DeckProps[]>();
 
     function handleDeleteDeck(deckId: number) {
-        setDecks(decks.filter(deck => deck.id !== deckId));
+        if (decks) {
+            setDecks(decks.filter(deck => deck._id !== deckId));
+        }
     }
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/decks')
+            .then(res => res.json())
+            .then(dane => setDecks(dane))
+            .catch(err => console.error('Błąd pobierania:', err));
+    }, []);
+
 
     return (
         <div className={styles.sidebar}>
@@ -20,10 +29,10 @@ const Sidebar = () => {
             <hr className={styles.separator} />
             <div className={styles.decksList}>
                 <NewDeck />
-                {decks.map((deck) => (
+                {decks && decks.map((deck) => (
                     <Deck
-                        key={deck.id}
-                        id={deck.id}
+                        key={deck._id}
+                        _id={deck._id}
                         name={deck.name}
                         description={deck.description}
                         sourceLanguage={deck.sourceLanguage}
@@ -31,6 +40,7 @@ const Sidebar = () => {
                         deleteDeck={handleDeleteDeck}
                     />
                 ))}
+                {!decks && <p className={styles.text}>Start by adding your first deck!</p>}
             </div >
         </div >
     );

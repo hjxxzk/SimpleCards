@@ -1,5 +1,5 @@
 export interface DeckProps {
-    id: number;
+    _id: number;
     name: string;
     description: string;
     sourceLanguage: string;
