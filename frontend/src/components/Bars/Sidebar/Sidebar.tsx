@@ -6,20 +6,32 @@ import Deck from "../Deck/Deck";
 
 const Sidebar = () => {
 
+    const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
+    const DECKS = import.meta.env.VITE_DECKS;
     const styles = useStyles();
     const [decks, setDecks] = useState<DeckProps[]>();
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
             setDecks(decks.filter(deck => deck._id !== deckId));
+            requestDelete(deckId);
         }
     }
 
+    function requestDelete(deckId: number) {
+        fetch(`${DB_ADDRESS}${DECKS}${deckId}`, {
+            method: 'DELETE',
+        })
+            .then(res => res.json())
+            .catch(err => console.error('Error:', err));
+
+    }
+
     useEffect(() => {
-        fetch('http://localhost:5000/api/decks')
+        fetch(`${DB_ADDRESS}${DECKS}`)
             .then(res => res.json())
             .then(dane => setDecks(dane))
-            .catch(err => console.error('Błąd pobierania:', err));
+            .catch(err => console.error('Error:', err));
     }, []);
 
 

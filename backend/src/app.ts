@@ -23,7 +23,20 @@ app.get('/api/decks', async (req, res) => {
         const dane = await Deck.find();
         res.json(dane);
     } catch (err) {
-        res.status(500).json({ message: 'Błąd serwera' });
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.delete('/api/decks/:id', async (req, res) => {
+    const deckId = req.params.id;
+    try {
+        const deletedDeck = await Deck.findByIdAndDelete(deckId);
+        if (!deletedDeck) {
+            return res.status(404).json({ message: 'Deck not found' });
+        }
+        res.json({ message: 'Deck deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
