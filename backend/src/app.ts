@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import Deck from './models/Deck';
 import cors from 'cors';
 
+const DECKS = '/api/decks/';
+const DELETE_DECK = '/api/decks/:id';
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -18,7 +21,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-app.get('/api/decks', async (req, res) => {
+app.get(DECKS, async (req, res) => {
     try {
         const dane = await Deck.find();
         res.json(dane);
@@ -27,7 +30,7 @@ app.get('/api/decks', async (req, res) => {
     }
 });
 
-app.delete('/api/decks/:id', async (req, res) => {
+app.delete(DELETE_DECK, async (req, res) => {
     const deckId = req.params.id;
     try {
         const deletedDeck = await Deck.findByIdAndDelete(deckId);

@@ -6,9 +6,10 @@ const NewDeck = () => {
 
     const styles = useStyles();
     const navigate = useNavigate();
+    const CREATE_DECK_PAGE = "/create";
 
     return (
-        <div className={styles.newDeck} onClick={() => { navigate("/create") }}>
+        <div className={styles.newDeck} onClick={() => { navigate(CREATE_DECK_PAGE) }}>
             <Plus color="black" size={24}></Plus>
         </div>
     );

@@ -10,6 +10,8 @@ const Deck = (props: DeckProps) => {
     const styles = useStyles();
     const [isPopupVisible, setPopupVisible] = useState(false);
     const navigate = useNavigate();
+    const EDIT_DECK_PAGE = `/edit/${props._id}`
+    const REVIEW_DECK_PAGE = `/${props._id}`;
 
     function handleDeleteDeck() {
         setPopupVisible(true);
@@ -25,11 +27,11 @@ const Deck = (props: DeckProps) => {
 
     return (
         <div className={styles.deckContainer}>
-            <div className={styles.deck} onClick={() => { navigate(`/${props._id}`) }} >
+            <div className={styles.deck} onClick={() => { navigate(REVIEW_DECK_PAGE) }} >
                 <div className={styles.deckHeader}>
                     <strong>{props.name}</strong>
                     <div className={styles.deckActions}>
-                        <Pencil className={styles.edit} color="gray" size={18} onClick={(event) => { event.stopPropagation(), navigate(`/edit/${props._id}`) }} />
+                        <Pencil className={styles.edit} color="gray" size={18} onClick={(event) => { event.stopPropagation(), navigate(EDIT_DECK_PAGE) }} />
                         <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                     </div>
                 </div>
