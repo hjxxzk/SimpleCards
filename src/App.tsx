@@ -17,7 +17,6 @@ function App() {
   });
 
   function toggleSidebar() {
-    console.log(`Sidebar toggled`);
     setIsSidebarVisible(!isSidebarVisible);
   }
 
