@@ -1,35 +1,24 @@
 import './App.css'
-import { useState } from 'react';
-import Navbar from './components/Bars/Navbar/Navbar'
-import Sidebar from './components/Bars/Sidebar/Sidebar'
-import ReviewSpace from './components/ReviewView/ReviewSpace/ReviewSpace'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ReviewView from './components/ReviewView/ReviewView';
+import EditView from './components/EditView/EditView';
+import UserView from './components/UserView/UserView';
+import CreateDeckView from './components/CreateDeckView/CreateDeckView';
+import Layout from './Layout';
 
 function App() {
-
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-  const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
-
-  const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
-  match.addEventListener('change', (event) => {
-    if (event.matches) {
-      setIsSidebarVisible(true);
-    };
-  });
-
-  function toggleSidebar() {
-    setIsSidebarVisible(!isSidebarVisible);
-  }
-
   return (
-    <>
-      <div className="w-screen h-screen overflow-hidden flex flex-col bg-neutral-100">
-        <Navbar toggleSidebar={toggleSidebar} />
-        <div className="w-full h-full flex overflow-hidden">
-          {isSidebarVisible && <Sidebar />}
-          <ReviewSpace />
-        </div>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<ReviewView />} />
+          <Route path="/:id" element={<ReviewView />} />
+          <Route path="/edit/:id" element={<EditView />} />
+          <Route path="/create" element={<CreateDeckView />} />
+        </Route>
+        <Route path="/user" element={<UserView />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
