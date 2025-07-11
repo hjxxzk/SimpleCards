@@ -8,8 +8,8 @@ const Sidebar = () => {
 
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const DECKS = import.meta.env.VITE_DECKS;
-    const styles = useStyles();
     const [decks, setDecks] = useState<DeckProps[]>();
+    const styles = useStyles();
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
@@ -30,7 +30,7 @@ const Sidebar = () => {
     useEffect(() => {
         fetch(`${DB_ADDRESS}${DECKS}`)
             .then(res => res.json())
-            .then(dane => setDecks(dane))
+            .then(dane => setDecks(dane.reverse()))
             .catch(err => console.error('Error:', err));
     }, []);
 

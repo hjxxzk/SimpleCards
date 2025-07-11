@@ -12,12 +12,13 @@ const Navbar = (props: NavbarProps) => {
     const navigate = useNavigate();
     const HOME_PAGE = "/";
     const USER_PAGE = "/user";
+    const logoPath = window.location.protocol + "//" + window.location.host + "/images/logo.png";
 
     return (
         <>
             <div className={styles.navbar}>
                 <Menu className={styles.menu} color="black" size={22} onClick={() => { props.toggleSidebar() }} />
-                <img src="src\assets\logo.png" alt="Logo" className={styles.logo} onClick={() => { navigate(HOME_PAGE) }} />
+                <img src={logoPath} alt="Logo" className={styles.logo} onClick={() => { navigate(HOME_PAGE) }} />
                 <CircleUserRound className={styles.icon} color="black" size={22} onClick={() => navigate(USER_PAGE)} />
             </div>
         </>

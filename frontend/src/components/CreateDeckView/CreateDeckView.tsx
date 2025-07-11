@@ -1,12 +1,10 @@
 import { useState } from 'react'
 import useStyles from "./CreateDeckView.styles";
 import LanguaguesField from "./LanguagesField/LanguagesField";
-import { useNavigate } from 'react-router-dom';
 
 function EditView() {
 
-    const styles = useStyles();
-    const navigate = useNavigate();
+    const styles = useStyles();;
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const DECKS = import.meta.env.VITE_DECKS;
     const DECK_PLACEHOLDER = "My Deck"
@@ -65,7 +63,7 @@ function EditView() {
                 })
             })
                 .then(response => response.json())
-                .then(data => navigate(`/edit/${data.id}`));
+                .then(data => window.location.href = `/edit/${data.id}`);
         } else {
             alert(MISSING_DATA_ALERT)
         }
