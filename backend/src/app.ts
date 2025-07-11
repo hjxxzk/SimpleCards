@@ -9,6 +9,7 @@ const DELETE_DECK = '/api/decks/:id';
 
 dotenv.config();
 const app = express();
+app.use(express.json());
 app.use(cors());
 
 mongoose.connect(process.env.MONGO_URI!)
@@ -39,6 +40,16 @@ app.delete(DELETE_DECK, async (req, res) => {
         }
         res.json({ message: 'Deck deleted successfully' });
     } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.post(DECKS, async (req, res) => {
+    try {
+        const newDeck = new Deck(req.body);
+        const savedDeck = await newDeck.save()
+        res.status(201).json({ id: savedDeck._id });
+    } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });

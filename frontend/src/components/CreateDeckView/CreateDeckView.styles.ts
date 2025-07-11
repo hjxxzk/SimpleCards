@@ -11,6 +11,7 @@ const useStyles = () => {
         languageChoiceContainer: "flex flex-col gap-5 w-1/4 h-full",
         buttonContainer: "flex justify-center pt-5 md:pt-0 md:justify-end items-center w-full px-10",
         createDeckButton: "py-5 w-30 md:py-6 md:w-40 xl:py-8 lg:py-6 lg:w-50 xl:w-60 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 rounded-xl text-black font-semibold cursor-pointer shadow-md",
+        splitLines: "xl:hidden",
     };
 }
 
