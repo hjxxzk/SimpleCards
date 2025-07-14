@@ -40,7 +40,6 @@ app.get(CARDS, async (req, res) => {
         const data = await Card.find({ deck_id: searchWord });
         res.json(data);
     } catch (err) {
-        console.log(err)
         res.status(500).json({ message: 'Server error' });
     }
 });
