@@ -1,15 +1,15 @@
-import useStyles from "./DeleteDeckPopup.style";
-import type { DeleteDeckPopupProps } from "./DeleteDeckPopupProps";
+import useStyles from "./DeletePopup.styles";
+import type { DeletePopupProps } from "./DeletePopup.types";
 
-const DeleteDeckPopup = (props: DeleteDeckPopupProps) => {
+const DeletePopup = (props: DeletePopupProps) => {
 
     const styles = useStyles();
 
     return (
         <div className={styles.popup}>
             <div className={styles.popupMessage}>
-                <strong>Delete Deck</strong>
-                Are you sure you want to delete this deck?
+                <strong>{props.title}</strong>
+                {props.message}
             </div>
             <div className={styles.buttonsContainer}>
                 <button className={styles.yesButton} onClick={props.handleYes}>YES</button>
@@ -20,4 +20,4 @@ const DeleteDeckPopup = (props: DeleteDeckPopupProps) => {
     );
 }
 
-export default DeleteDeckPopup;
+export default DeletePopup;

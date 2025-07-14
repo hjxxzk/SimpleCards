@@ -11,8 +11,10 @@ function EditView() {
     const DESCRIPTION_PLACEHOLDER = "Deck to learn a new language"
     const MISSING_DATA_ALERT = "Please fill all of the fields"
     const ENGLISH = "en"
+    const POLISH = "pl"
     const LANGUAGES_HASHMAP = new Map<string, string>([
         ["English", "en"],
+        ["Polish", "pl"],
         ["Spanish", "es"],
         ["French", "fr"],
         ["German", "de"],
@@ -23,7 +25,7 @@ function EditView() {
     const [deckName, setDeckName] = useState<string>("")
     const [deckDescription, setDeckDescription] = useState<string>("")
     const [sourceLanguage, setSourceLanguage] = useState<string>(ENGLISH)
-    const [translationLanguage, setTranslationLanguage] = useState<string>(ENGLISH)
+    const [translationLanguage, setTranslationLanguage] = useState<string>(POLISH)
 
     function findLanguageName(shortform: string) {
         for (const [key, value] of LANGUAGES_HASHMAP) {
@@ -84,7 +86,7 @@ function EditView() {
                         onChange={e => setDeckDescription(e.target.value)} />
                 </div>
                 <div className={styles.languageChoiceContainer}>
-                    <p className={styles.text}>Learning <br className={styles.splitLines} />Language</p>
+                    <p className={styles.text}>Source <br className={styles.splitLines} />Language</p>
                     <LanguaguesField language={findLanguageName(sourceLanguage)} changeLanguage={changeSourceLanguage} />
                 </div>
                 <div className={styles.languageChoiceContainer}>

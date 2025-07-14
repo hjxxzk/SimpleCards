@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import type { DeckProps } from './DeckProps.types';
 import { Pencil, Trash2 } from 'lucide-react';
 import useStyles from './Deck.styles';
-import DeleteDeckPopup from '../DeleteDeckPopup/DeleteDeckPopup';
+import DeleteDeckPopup from '../DeletePopup/DeletePopup';
 
 const Deck = (props: DeckProps) => {
 
@@ -41,7 +41,7 @@ const Deck = (props: DeckProps) => {
                 <strong className={styles.language}>{props.sourceLanguage} | {props.translationLanguage}</strong>
 
             </div>
-            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} />}
+            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title="Delete Deck" message="Are you sure you want to delete this deck?" />}
         </div>
     );
 }

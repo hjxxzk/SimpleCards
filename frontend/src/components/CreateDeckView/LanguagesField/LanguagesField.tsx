@@ -4,7 +4,7 @@ import useStyles from './LanguagesField.styles';
 
 const LanguaguesField = (props: LanguagesFieldProps) => {
 
-    const LANGUAGES = ["English", "Spanish", "French", "German", "Chinese", "Japanese"];
+    const LANGUAGES = ["English", "Polish", "Spanish", "French", "German", "Chinese", "Japanese"];
     const [indexOfChosenLanguage, setIndexOfChosenLanguage] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const styles = useStyles()
