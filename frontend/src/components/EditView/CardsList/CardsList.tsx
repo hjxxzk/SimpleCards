@@ -1,5 +1,5 @@
 import useStyles from './CardsList.styles';
-import NewDeck from '../../Bars/NewDeck/NewDeck';
+import NewElement from '../../Bars/NewElement/NewElement';
 import Card from '../Card/Card';
 import type { CardListProps } from './CardListProps.types';
 import { useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ const CardsList = (props: CardListProps) => {
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const CARDS = import.meta.env.VITE_CARDS;
     const styles = useStyles();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     function handleDeleteCard(cardId: number) {
         if (props.cards) {
@@ -31,7 +31,7 @@ const CardsList = (props: CardListProps) => {
             <strong>Cards in this deck: </strong>
             <hr className={styles.separator} />
             <div className={styles.cardsList}>
-                <NewDeck />
+                <NewElement navigate={props.addCard} />
                 {props.cards && props.cards.map((card) => (
                     <div onClick={() => navigate(`/edit/${card.deck_id}/${card._id}`)}>
                         <Card

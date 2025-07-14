@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import useStyles from "./Sidebar.styles";
-import NewDeck from "../NewDeck/NewDeck";
+import NewElement from "../NewElement/NewElement";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
 
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const DECKS = import.meta.env.VITE_DECKS;
+    const CREATE_DECK_PAGE = "/create";
     const [decks, setDecks] = useState<DeckProps[]>();
     const styles = useStyles();
+    const navigate = useNavigate()
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
@@ -27,6 +30,10 @@ const Sidebar = () => {
 
     }
 
+    function handleAddDeck() {
+        navigate(CREATE_DECK_PAGE);
+    }
+
     useEffect(() => {
         fetch(`${DB_ADDRESS}${DECKS}`)
             .then(res => res.json())
@@ -40,7 +47,7 @@ const Sidebar = () => {
             <strong>Your Decks:</strong>
             <hr className={styles.separator} />
             <div className={styles.decksList}>
-                <NewDeck />
+                <NewElement navigate={handleAddDeck} />
                 {decks && decks.map((deck) => (
                     <Deck
                         key={deck._id}

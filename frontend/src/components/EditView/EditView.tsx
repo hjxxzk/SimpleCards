@@ -8,17 +8,26 @@ import type { CardProps } from "./Card/CardProps.types";
 function EditView() {
 
     const styles = useStyles();
-
+    const params = useParams();
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const CARDS = import.meta.env.VITE_CARDS;
     const [cards, setCards] = useState<CardProps[]>();
     const [editedCard, setEditedCard] = useState<CardProps>();
-    const params = useParams();
+    const emptyCard: CardProps = {
+        _id: 0,
+        word: "",
+        translation: ""
+    }
+
 
     function deleteCard(cardId: number) {
         if (cards) {
             setCards(cards.filter(card => card._id !== cardId));
         }
+    }
+
+    function handleAddCard() {
+        setEditedCard(emptyCard);
     }
 
     function chooseCard(cardId: number) {
@@ -39,7 +48,7 @@ function EditView() {
 
     return (
         <div className={styles.mainContainer}>
-            <CardsList cards={cards || []} deleteCard={deleteCard} chooseCardToEdit={chooseCard} />
+            <CardsList cards={cards || []} deleteCard={deleteCard} chooseCardToEdit={chooseCard} addCard={handleAddCard} />
             {editedCard && <EditCard card={editedCard} />}
         </div>
     )
