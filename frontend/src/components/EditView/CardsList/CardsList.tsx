@@ -1,21 +1,17 @@
-import { useState, useEffect } from 'react';
 import useStyles from './CardsList.styles';
 import NewDeck from '../../Bars/NewDeck/NewDeck';
 import Card from '../Card/Card';
-import type { CardProps } from '../Card/CardProps.types';
-import { useParams } from 'react-router-dom';
+import type { CardListProps } from './CardListProps.types';
 
-const CardsList = () => {
+const CardsList = (props: CardListProps) => {
 
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const CARDS = import.meta.env.VITE_CARDS;
-    const [cards, setCards] = useState<CardProps[]>();
-    const params = useParams();
     const styles = useStyles();
 
     function handleDeleteCard(cardId: number) {
-        if (cards) {
-            setCards(cards.filter(card => card._id !== cardId));
+        if (props.cards) {
+            props.deleteCard(cardId);
             requestDelete(cardId);
         }
     }
@@ -29,13 +25,6 @@ const CardsList = () => {
 
     }
 
-    useEffect(() => {
-        fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`)
-            .then(res => res.json())
-            .then(data => { console.log(data), setCards(data.reverse()) })
-            .catch(err => console.error('Error:', err));
-    }, []);
-
 
     return (
         <div className={styles.sidebar}>
@@ -43,7 +32,7 @@ const CardsList = () => {
             <hr className={styles.separator} />
             <div className={styles.cardsList}>
                 <NewDeck />
-                {cards && cards.map((card) => (
+                {props.cards && props.cards.map((card) => (
                     <Card
                         key={card._id}
                         _id={card._id}
@@ -52,7 +41,7 @@ const CardsList = () => {
                         deleteCard={handleDeleteCard}
                     />
                 ))}
-                {!cards && <p className={styles.text}>Start by adding your first card!</p>}
+                {!props.cards && <p className={styles.text}>Start by adding your first card!</p>}
             </div >
         </div >
     );
