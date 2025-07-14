@@ -13,7 +13,9 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<ReviewView />} />
           <Route path="/:id" element={<ReviewView />} />
-          <Route path="/edit/:id" element={<EditView />} />
+          <Route path="/edit/:id" element={<EditView />}>
+            <Route path="/edit/:id/create" element={<EditView />} />
+          </Route>
           <Route path="/create" element={<CreateDeckView />} />
         </Route>
         <Route path="/user" element={<UserView />} />
