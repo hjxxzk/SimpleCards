@@ -7,15 +7,15 @@ const deckSchema = new mangoose.Schema({
     },
     description: {
         type: String,
-        required: false,
+        required: true,
     },
     sourceLanguage: {
         type: String,
-        required: false,
+        required: true,
     },
     translationLanguage: {
         type: String,
-        required: false,
+        required: true,
     }
 });
 

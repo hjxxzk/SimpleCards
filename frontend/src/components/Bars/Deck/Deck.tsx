@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { DeckProps } from './DeckProps.types';
 import { Pencil, Trash2 } from 'lucide-react';
 import useStyles from './Deck.styles';
-import DeleteDeckPopup from '../DeleteDeckPopup/DeleteDeckPopup';
+import DeleteDeckPopup from '../DeletePopup/DeletePopup';
 
 const Deck = (props: DeckProps) => {
 
@@ -12,6 +12,7 @@ const Deck = (props: DeckProps) => {
     const navigate = useNavigate();
     const EDIT_DECK_PAGE = `/edit/${props._id}`
     const REVIEW_DECK_PAGE = `/${props._id}`;
+    const params = useParams()
 
     function handleDeleteDeck() {
         setPopupVisible(true);
@@ -27,7 +28,7 @@ const Deck = (props: DeckProps) => {
 
     return (
         <div className={styles.deckContainer}>
-            <div className={styles.deck} onClick={() => { navigate(REVIEW_DECK_PAGE) }} >
+            <div className={`${styles.deck} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} onClick={() => { navigate(REVIEW_DECK_PAGE) }} >
                 <div className={styles.deckHeader}>
                     <strong>{props.name}</strong>
                     <div className={styles.deckActions}>
@@ -40,7 +41,7 @@ const Deck = (props: DeckProps) => {
                 <strong className={styles.language}>{props.sourceLanguage} | {props.translationLanguage}</strong>
 
             </div>
-            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} />}
+            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title="Delete Deck" message="Are you sure you want to delete this deck?" />}
         </div>
     );
 }
