@@ -25,7 +25,7 @@ const Card = (props: CardProps) => {
 
     return (
         <div className={styles.cardContainer}>
-            <div className={`${styles.card} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} >
+            <div className={`${styles.card} ${params?.card_id === props._id.toString() ? 'bg-amber-300' : ''}`} >
                 <div className={styles.cardHeader}>
                     <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                 </div>

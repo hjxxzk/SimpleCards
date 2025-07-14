@@ -15,6 +15,7 @@ function App() {
           <Route path="/:id" element={<ReviewView />} />
           <Route path="/edit/:id" element={<EditView />}>
             <Route path="/edit/:id/create" element={<EditView />} />
+            <Route path="/edit/:id/:card_id" element={<EditView />} />
           </Route>
           <Route path="/create" element={<CreateDeckView />} />
         </Route>
