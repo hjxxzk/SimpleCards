@@ -18,8 +18,8 @@ const CardsList = (props: CardListProps) => {
         }
     }
 
-    function requestDelete(cardId: number) {
-        fetch(`${DB_ADDRESS}${CARDS}/${cardId}`, {
+    async function requestDelete(cardId: number) {
+        await fetch(`${DB_ADDRESS}${CARDS}/${cardId}`, {
             method: 'DELETE',
         })
             .then(res => res.json())

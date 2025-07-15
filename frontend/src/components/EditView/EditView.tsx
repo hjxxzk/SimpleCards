@@ -37,7 +37,7 @@ function EditView() {
             try {
                 const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`);
                 const data = await res.json();
-                setCards(data);
+                setCards(data.reverse());
             } catch (err) {
                 console.error('Error:', err);
             }
@@ -59,7 +59,7 @@ function EditView() {
         <div className={styles.mainContainer}>
             <CardsList cards={cards || []} deleteCard={deleteCard} chooseCardToEdit={chooseCard} addCard={handleAddCard} />
             {editedCard && !isNewCardCreated && <EditCard card={editedCard} />}
-            {isNewCardCreated && <CreateCard />}
+            {isNewCardCreated && <CreateCard deck_id={params.id || ""} />}
         </div>
     )
 }

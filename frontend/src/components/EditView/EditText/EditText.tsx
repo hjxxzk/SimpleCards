@@ -14,7 +14,7 @@ const EditText = (props: EditTextProps) => {
                 placeholder={props.placeholder}
                 onChange={(e) => props.changeWord(e.target.value)}
                 value={props.word} />
-            <X color="gray" size={24} onClick={() => { props.cancelEdit() }} className={props.isChanged ? styles.cancelButton : "hidden"} />
+            <X color="gray" size={24} onClick={() => { props.cancelEdit?.() }} className={props.isChanged ? styles.cancelButton : "hidden"} />
 
         </div>
     );

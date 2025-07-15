@@ -3,5 +3,5 @@ export default interface EditTextProps {
     placeholder: string;
     isChanged?: boolean;
     changeWord: (word: string) => void;
-    cancelEdit: () => void;
+    cancelEdit?: () => void;
 }
