@@ -1,24 +1,22 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useStyles from "./EditView.styles";
 import CardsList from "./CardsList/CardsList";
 import EditCard from "./EditCard/EditCard";
 import type { CardProps } from "./Card/CardProps.types";
+import CreateCard from "./CreateCard/CreateCard";
 
 function EditView() {
 
     const styles = useStyles();
     const params = useParams();
+    const navigate = useNavigate();
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const CARDS = import.meta.env.VITE_CARDS;
+    const CREATE = "create";
     const [cards, setCards] = useState<CardProps[]>();
     const [editedCard, setEditedCard] = useState<CardProps>();
-    const emptyCard: CardProps = {
-        _id: 0,
-        word: "",
-        translation: ""
-    }
-
+    const [isNewCardCreated, setIsNewCardCreated] = useState(false);
 
     function deleteCard(cardId: number) {
         if (cards) {
@@ -27,7 +25,7 @@ function EditView() {
     }
 
     function handleAddCard() {
-        setEditedCard(emptyCard);
+        navigate(`/edit/${params.id}/${CREATE}`);
     }
 
     function chooseCard(cardId: number) {
@@ -35,21 +33,33 @@ function EditView() {
     }
 
     useEffect(() => {
-        fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`)
-            .then(res => res.json())
-            .then(data => setCards(data))
-            .catch(err => console.error('Error:', err));
+        const fetchCards = async () => {
+            try {
+                const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`);
+                const data = await res.json();
+                setCards(data);
+            } catch (err) {
+                console.error('Error:', err);
+            }
+        };
+
+        fetchCards();
     }, [params]);
 
     useEffect(() => {
-        setEditedCard(cards?.find(card => { return params?.card_id === card._id.toString() }));
-    }, [params]);
-
+        if (params?.card_id === CREATE) {
+            setIsNewCardCreated(true);
+        } else {
+            setEditedCard(cards?.find(card => { return params?.card_id === card._id.toString() }));
+            setIsNewCardCreated(false);
+        }
+    });
 
     return (
         <div className={styles.mainContainer}>
             <CardsList cards={cards || []} deleteCard={deleteCard} chooseCardToEdit={chooseCard} addCard={handleAddCard} />
-            {editedCard && <EditCard card={editedCard} />}
+            {editedCard && !isNewCardCreated && <EditCard card={editedCard} />}
+            {isNewCardCreated && <CreateCard />}
         </div>
     )
 }

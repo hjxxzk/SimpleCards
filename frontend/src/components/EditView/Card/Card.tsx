@@ -31,7 +31,7 @@ const Card = (props: CardProps) => {
                 </div>
                 <p>{props.word}</p>
             </div>
-            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message='Do you want to delete this Card?' title="Delete Card" />}
+            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message='Do you want to delete this card?' title="Delete Card" />}
         </div>
     );
 }

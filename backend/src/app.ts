@@ -44,6 +44,22 @@ app.get(CARDS, async (req, res) => {
     }
 });
 
+app.patch(CARDS + ':id', async (req, res) => {
+    const cardId = req.params.id;
+    const updatedCard = req.body.updatedCard;
+
+    try {
+        const card = await Card.findByIdAndUpdate(cardId, updatedCard, { new: true });
+        if (!card) {
+            return res.status(404).json({ message: 'Card not found' });
+        }
+        res.json({ message: "Card updated successfully" });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 app.delete(DELETE_CARD, async (req, res) => {
     const cardId = req.params.id;
     try {
