@@ -6,9 +6,9 @@ import Card from './models/Card'
 import cors from 'cors';
 
 const DECKS = '/api/decks/';
-const DELETE_DECK = '/api/decks/:id';
+const DECK_BY_ID = '/api/decks/:id';
 const CARDS = '/api/cards/';
-const DELETE_CARD = '/api/cards/:id';
+const CARD_BY_ID = '/api/cards/:id';
 
 dotenv.config();
 const app = express();
@@ -29,6 +29,20 @@ app.get(DECKS, async (req, res) => {
     try {
         const data = await Deck.find();
         res.json(data);
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+app.get(DECK_BY_ID, async (req, res) => {
+    try {
+        const data = await Deck.findById(req.params.id);
+        if (!data) {
+            return res.status(404).json({ message: 'Deck not found' });
+        } else {
+            res.json(data);
+        }
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -70,7 +84,7 @@ app.patch(CARDS + ':id', async (req, res) => {
     }
 });
 
-app.delete(DELETE_CARD, async (req, res) => {
+app.delete(CARD_BY_ID, async (req, res) => {
     const cardId = req.params.id;
     try {
         const deletedCard = await Card.findByIdAndDelete(cardId);
@@ -83,7 +97,7 @@ app.delete(DELETE_CARD, async (req, res) => {
     }
 });
 
-app.delete(DELETE_DECK, async (req, res) => {
+app.delete(DECK_BY_ID, async (req, res) => {
     const deckId = req.params.id;
     try {
         const deletedDeck = await Deck.findByIdAndDelete(deckId);
