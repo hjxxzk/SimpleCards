@@ -33,6 +33,7 @@ function EditView() {
                 return key;
             }
         }
+        return "";
     }
 
     function changeSourceLanguage(language: string) {

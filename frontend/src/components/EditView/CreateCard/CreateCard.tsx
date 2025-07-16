@@ -47,9 +47,15 @@ const CreateCard = (props: CreateCardProps) => {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <EditText word={wordChanged || ""} placeholder={WORD_PLACEHOLDER} changeWord={setWordChanged} isChanged={false} />
+                <div className={styles.formInputContainer}>
+                    <p className={styles.title}>Word:</p>
+                    <EditText word={wordChanged || ""} placeholder={WORD_PLACEHOLDER} changeWord={setWordChanged} isChanged={false} />
+                </div>
                 <div className={styles.separator} />
-                <EditText word={translationChanged || ""} placeholder={TRANSLATION_PLACEHOLDER} changeWord={setTranslationChanged} isChanged={false} />
+                <div className={styles.formInputContainer}>
+                    <p className={styles.title}>Translation:</p>
+                    <EditText word={translationChanged || ""} placeholder={TRANSLATION_PLACEHOLDER} changeWord={setTranslationChanged} isChanged={false} />
+                </div>
                 {hasBothChanged() && <button className={styles.saveButton} onClick={() => handleSave()}>SAVE</button>}
             </div>
         </div>

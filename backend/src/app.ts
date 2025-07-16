@@ -48,6 +48,44 @@ app.get(DECK_BY_ID, async (req, res) => {
     }
 });
 
+app.delete(DECK_BY_ID, async (req, res) => {
+    const deckId = req.params.id;
+    try {
+        const deletedDeck = await Deck.findByIdAndDelete(deckId);
+        if (!deletedDeck) {
+            return res.status(404).json({ message: 'Deck not found' });
+        }
+        res.json({ message: 'Deck deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.post(DECKS, async (req, res) => {
+    try {
+        const newDeck = new Deck(req.body);
+        const savedDeck = await newDeck.save()
+        res.status(201).json({ id: savedDeck._id });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.patch(DECK_BY_ID, async (req, res) => {
+    const deckId = req.params.id;
+    const updatedDeck = req.body.updatedDeck;
+
+    try {
+        const deck = await Deck.findByIdAndUpdate(deckId, updatedDeck, { new: true });
+        if (!deck) {
+            return res.status(404).json({ message: 'Card not found' });
+        }
+        res.json({ message: "Card updated successfully" });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 app.get(CARDS, async (req, res) => {
     try {
         const searchWord = req.query.search
@@ -79,7 +117,6 @@ app.patch(CARDS + ':id', async (req, res) => {
         }
         res.json({ message: "Card updated successfully" });
     } catch (err) {
-        console.log(err);
         res.status(500).json({ message: 'Server error' });
     }
 });
@@ -93,29 +130,6 @@ app.delete(CARD_BY_ID, async (req, res) => {
         }
         res.json({ message: 'Card deleted successfully' });
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-app.delete(DECK_BY_ID, async (req, res) => {
-    const deckId = req.params.id;
-    try {
-        const deletedDeck = await Deck.findByIdAndDelete(deckId);
-        if (!deletedDeck) {
-            return res.status(404).json({ message: 'Deck not found' });
-        }
-        res.json({ message: 'Deck deleted successfully' });
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-app.post(DECKS, async (req, res) => {
-    try {
-        const newDeck = new Deck(req.body);
-        const savedDeck = await newDeck.save()
-        res.status(201).json({ id: savedDeck._id });
-    } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });

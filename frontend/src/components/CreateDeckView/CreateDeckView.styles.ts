@@ -6,11 +6,11 @@ const useStyles = () => {
         form: "flex gap-5 w-full h-3/5 py-5 pt-15",
         text: "text-lg semibold",
         textInputContainer: "flex flex-col gap-5 w-1/2 h-full",
-        deckNameInput: "bg-neutral-100 border-b-2 h-10 w-30 sm:w-50 md:w-60 lg:w-60 xl:w-70 2xl:w-100 3xl:w-150",
+        deckNameInput: "bg-neutral-100 border-b-2 h-17 w-30 sm:w-50 md:w-60 lg:w-60 xl:w-70 2xl:w-100 3xl:w-150",
         descriptionInput: "bg-neutral-100 border-b-2 h-47 md:h-70 w-30 sm:w-50 md:w-60 lg:w-60 xl:w-70 2xl:w-100 3xl:w-150",
         languageChoiceContainer: "flex flex-col gap-5 w-1/4 h-full",
         buttonContainer: "flex justify-center pt-5 md:pt-0 md:justify-end items-center w-full h-full px-5",
-        createDeckButton: "py-5 w-30 md:py-6 md:w-40 xl:py-8 lg:py-6 lg:w-50 xl:w-50 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 rounded-xl text-black font-semibold cursor-pointer shadow-md",
+        createDeckButton: "py-5 w-30 md:py-6 md:w-40 lg:py-6 lg:w-50 xl:w-50 bg-amber-300 hover:bg-amber-400 active:bg-amber-500 rounded-xl text-black font-semibold cursor-pointer shadow-md",
         splitLines: "xl:hidden",
     };
 }

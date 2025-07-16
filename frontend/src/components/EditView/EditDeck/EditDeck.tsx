@@ -34,19 +34,24 @@ function EditDeck() {
         async function fetchDeck() {
             await fetch(`${DB_ADDRESS}${DECKS}${params.id}`)
                 .then(res => res.json())
-                .then(dane => setEditedDeck({
-                    _id: dane._id,
-                    name: dane.name,
-                    description: dane.description,
-                    sourceLanguage: dane.sourceLanguage,
-                    translationLanguage: dane.translationLanguage
-                }))
+                .then(dane => {
+                    setEditedDeck({
+                        _id: dane._id,
+                        name: dane.name,
+                        description: dane.description,
+                        sourceLanguage: dane.sourceLanguage,
+                        translationLanguage: dane.translationLanguage
+                    }),
+                        setDeckName(dane.name),
+                        setDeckDescription(dane.description),
+                        setSourceLanguage(dane.sourceLanguage),
+                        setTranslationLanguage(dane.translationLanguage)
+                }
+                )
                 .catch(err => console.error('Error:', err));
         }
         fetchDeck();
-    });
-
-
+    }, [params.id]);
 
     function findLanguageName(shortform: string) {
         for (const [key, value] of LANGUAGES_HASHMAP) {
@@ -54,6 +59,7 @@ function EditDeck() {
                 return key;
             }
         }
+        return "";
     }
 
     function changeSourceLanguage(language: string) {
@@ -70,26 +76,39 @@ function EditDeck() {
         return deckName && deckDescription && sourceLanguage && translationLanguage;
     }
 
+    function hasAnythingChanged() {
+        return deckName !== editedDeck?.name ||
+            deckDescription !== editedDeck?.description ||
+            sourceLanguage !== editedDeck?.sourceLanguage ||
+            translationLanguage !== editedDeck?.translationLanguage;
+    }
 
-    function handleDeckCreation() {
+
+    function handleDeckEdit() {
         if (isEverythingFilled()) {
-            fetch(`${DB_ADDRESS}${DECKS}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: deckName,
-                    description: deckDescription,
-                    sourceLanguage: sourceLanguage,
-                    translationLanguage: translationLanguage
-                })
-            })
-                .then(response => response.json())
-                .then(data => window.location.href = `/edit/${data.id}`);
+            editDeck();
+            window.location.reload();
         } else {
             alert(MISSING_DATA_ALERT)
         }
+    }
+
+    async function editDeck() {
+        const updatedDeck = {
+            name: deckName,
+            description: deckDescription,
+            sourceLanguage: sourceLanguage,
+            translationLanguage: translationLanguage
+        };
+        await fetch(`${DB_ADDRESS}${DECKS}${params.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ updatedDeck })
+        })
+            .then(response => response.json())
+            .catch(err => console.error('Error:', err));
     }
 
     return (
@@ -99,12 +118,17 @@ function EditDeck() {
             <div className={styles.form}>
                 <div className={styles.textInputContainer}>
                     <p className={styles.text}>Deck Name</p>
-                    <input className={styles.deckNameInput} type="text" placeholder={DECK_PLACEHOLDER} onChange={e => setDeckName(e.target.value)} />
+                    <input className={styles.deckNameInput}
+                        type="text"
+                        placeholder={DECK_PLACEHOLDER}
+                        onChange={e => setDeckName(e.target.value)}
+                        value={deckName} />
                     <p className={styles.text}>Deck Description</p>
                     <textarea className={styles.descriptionInput}
                         name="description"
                         placeholder={DESCRIPTION_PLACEHOLDER}
-                        onChange={e => setDeckDescription(e.target.value)} />
+                        onChange={e => setDeckDescription(e.target.value)}
+                        value={deckDescription} />
                 </div>
                 <div className={styles.languageChoiceContainer}>
                     <p className={styles.text}>Source <br className={styles.splitLines} />Language</p>
@@ -116,7 +140,7 @@ function EditDeck() {
                 </div>
             </div>
             <div className={styles.buttonContainer}>
-                <button className={styles.createDeckButton} onClick={() => handleDeckCreation()}>CREATE DECK</button>
+                {hasAnythingChanged() && <button className={styles.createDeckButton} onClick={() => handleDeckEdit()}>EDIT DECK</button>}
             </div>
         </div >
     )
