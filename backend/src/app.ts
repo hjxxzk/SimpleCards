@@ -44,6 +44,31 @@ app.get(CARDS, async (req, res) => {
     }
 });
 
+app.post(CARDS, async (req, res) => {
+    try {
+        const newCard = new Card(req.body);
+        const savedCard = await newCard.save();
+        res.status(201).json({ id: savedCard._id });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.patch(CARDS + ':id', async (req, res) => {
+    const cardId = req.params.id;
+    const updatedCard = req.body.updatedCard;
+
+    try {
+        const card = await Card.findByIdAndUpdate(cardId, updatedCard, { new: true });
+        if (!card) {
+            return res.status(404).json({ message: 'Card not found' });
+        }
+        res.json({ message: "Card updated successfully" });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 app.delete(DELETE_CARD, async (req, res) => {
     const cardId = req.params.id;
     try {

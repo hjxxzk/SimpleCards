@@ -25,13 +25,13 @@ const Card = (props: CardProps) => {
 
     return (
         <div className={styles.cardContainer}>
-            <div className={`${styles.card} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} >
+            <div className={`${styles.card} ${params?.card_id === props._id.toString() ? 'bg-amber-300' : ''}`} >
                 <div className={styles.cardHeader}>
                     <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                 </div>
                 <p>{props.word}</p>
             </div>
-            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message='Do you want to delete this Card?' title="Delete Card" />}
+            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message='Do you want to delete this card?' title="Delete Card" />}
         </div>
     );
 }
