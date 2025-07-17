@@ -13,6 +13,8 @@ const Deck = (props: DeckProps) => {
     const EDIT_DECK_PAGE = `/edit/${props._id}`
     const REVIEW_DECK_PAGE = `/${props._id}`;
     const params = useParams()
+    const DELETE_MESSAGE = "Do you want to delete this deck?";
+    const POPUP_TITLE = "Delete Deck";
 
     function handleDeleteDeck() {
         setPopupVisible(true);
@@ -41,7 +43,7 @@ const Deck = (props: DeckProps) => {
                 <strong className={styles.language}>{props.sourceLanguage} | {props.translationLanguage}</strong>
 
             </div>
-            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title="Delete Deck" message="Do you want to delete this deck?" />}
+            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title={POPUP_TITLE} message={DELETE_MESSAGE} />}
         </div>
     );
 }

@@ -6,19 +6,23 @@ import Sidebar from './components/Bars/Sidebar/Sidebar';
 const Layout = () => {
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
+    const MEDIUM_OR_LARGER_SCREEN = "(width < 1024px)";
     const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN);
     const params = useParams();
 
     match.addEventListener('change', (event) => {
         if (event.matches) {
+            setIsSidebarVisible(false);
+        } else {
             setIsSidebarVisible(true);
-        };
+        }
     });
 
     useEffect(() => {
-        if (params.id || params.card_id) {
+        if (params.id && match.matches) {
             setIsSidebarVisible(false);
+        } else {
+            setIsSidebarVisible(true);
         }
     }, [params]);
 

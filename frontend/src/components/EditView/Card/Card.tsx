@@ -7,12 +7,15 @@ import DeletePopup from '../../Bars/DeletePopup/DeletePopup';
 
 const Card = (props: CardProps) => {
 
-    const styles = useStyles();
+    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
+    const DELETE_MESSAGE = "Do you want to delete this card?";
+    const POPUP_TITLE = "Delete Card";
+    const DELETE_MESSAGE_SHORT = "Delete?";
     const [isPopupVisible, setPopupVisible] = useState(false);
+    const styles = useStyles();
     const params = useParams()
 
     const [isShorterMessageVisible, setIsShorterMessageVisible] = useState(true);
-    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
     const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
     match.addEventListener('change', (event) => {
         if (event.matches) {
@@ -50,7 +53,7 @@ const Card = (props: CardProps) => {
                 </div>
                 <p>{props.word}</p>
             </div>
-            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message={isShorterMessageVisible ? 'Do you want to delete this card?' : 'Delete?'} title="Delete Card" />}
+            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message={isShorterMessageVisible ? DELETE_MESSAGE : DELETE_MESSAGE_SHORT} title={POPUP_TITLE} />}
         </div>
     );
 }
