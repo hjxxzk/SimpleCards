@@ -7,7 +7,6 @@ const LanguaguesField = (props: LanguagesFieldProps) => {
     const LANGUAGES = ["English", "Polish", "Spanish", "French", "German", "Chinese", "Japanese"];
     const [isVisible, setIsVisible] = useState(false);
     const styles = useStyles()
-
     return (
         <>
             <p className={styles.languageChoice} onClick={() => setIsVisible(!isVisible)}>{props.language}</p>

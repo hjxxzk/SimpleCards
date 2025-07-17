@@ -43,7 +43,6 @@ function EditView() {
                 console.error('Error:', err);
             }
         };
-
         fetchCards();
     }, [params]);
 
