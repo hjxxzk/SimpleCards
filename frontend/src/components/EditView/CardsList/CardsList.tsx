@@ -15,6 +15,13 @@ const CardsList = (props: CardListProps) => {
     const [isBigScreen, setIsBigScreen] = useState(true);
     const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
     const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
+    match.addEventListener('change', (event) => {
+        if (event.matches) {
+            setIsBigScreen(true);
+        } else {
+            setIsBigScreen(false);
+        }
+    });
 
     useEffect(() => {
         if (match.matches) {

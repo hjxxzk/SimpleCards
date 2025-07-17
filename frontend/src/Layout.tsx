@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
-import { useState } from 'react';
+import { Outlet, useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Bars/Navbar/Navbar';
 import Sidebar from './components/Bars/Sidebar/Sidebar';
 
@@ -7,12 +7,20 @@ const Layout = () => {
 
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
     const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
-    const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
+    const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN);
+    const params = useParams();
+
     match.addEventListener('change', (event) => {
         if (event.matches) {
             setIsSidebarVisible(true);
         };
     });
+
+    useEffect(() => {
+        if (params.id || params.card_id) {
+            setIsSidebarVisible(false);
+        }
+    }, [params]);
 
     function toggleSidebar() {
         setIsSidebarVisible(!isSidebarVisible);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import type { CardProps } from './CardProps.types';
 import { Trash2 } from 'lucide-react';
@@ -21,6 +21,14 @@ const Card = (props: CardProps) => {
             setIsShorterMessageVisible(false);
         }
     });
+
+    useEffect(() => {
+        if (match.matches) {
+            setIsShorterMessageVisible(true);
+        } else {
+            setIsShorterMessageVisible(false);
+        }
+    }, [match.matches]);
 
     function handleDeleteDeck() {
         setPopupVisible(true);
