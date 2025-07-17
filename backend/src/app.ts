@@ -65,7 +65,6 @@ app.patch(CARDS + ':id', async (req, res) => {
         }
         res.json({ message: "Card updated successfully" });
     } catch (err) {
-        console.log(err);
         res.status(500).json({ message: 'Server error' });
     }
 });
