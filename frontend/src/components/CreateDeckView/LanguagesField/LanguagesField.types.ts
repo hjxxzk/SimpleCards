@@ -1,4 +1,4 @@
 export default interface LanguagesFieldProps {
-    language?: string,
+    language: string,
     changeLanguage: (language: string) => void;
 }

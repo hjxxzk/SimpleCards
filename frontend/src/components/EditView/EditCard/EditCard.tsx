@@ -73,9 +73,15 @@ const EditCard = (props: EditCardProps) => {
     return (
         <div className={styles.container}>
             <div className={styles.card}>
-                <EditText word={wordChanged || ""} placeholder={WORD_PLACEHOLDER} changeWord={setWordChanged} cancelEdit={cancelWordEdit} isChanged={hasWordChanged()} />
+                <div className={styles.formInputContainer}>
+                    <p className={styles.title}>Word:</p>
+                    <EditText word={wordChanged || ""} placeholder={WORD_PLACEHOLDER} changeWord={setWordChanged} cancelEdit={cancelWordEdit} isChanged={hasWordChanged()} />
+                </div>
                 <div className={styles.separator} />
-                <EditText word={translationChanged || ""} placeholder={TRANSLATION_PLACEHOLDER} changeWord={setTranslationChanged} cancelEdit={cancelTranslationEdit} isChanged={hasTranslationChanged()} />
+                <div className={styles.formInputContainer}>
+                    <p className={styles.title}>Translation:</p>
+                    <EditText word={translationChanged || ""} placeholder={TRANSLATION_PLACEHOLDER} changeWord={setTranslationChanged} cancelEdit={cancelTranslationEdit} isChanged={hasTranslationChanged()} />
+                </div>
                 {hasAntyhingChanged() && <button className={styles.saveButton} onClick={() => handleSave()}>SAVE</button>}
             </div>
         </div>

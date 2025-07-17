@@ -5,6 +5,7 @@ import CardsList from "./CardsList/CardsList";
 import EditCard from "./EditCard/EditCard";
 import type { CardProps } from "./Card/CardProps.types";
 import CreateCard from "./CreateCard/CreateCard";
+import EditDeck from "./EditDeck/EditDeck";
 
 function EditView() {
 
@@ -57,6 +58,7 @@ function EditView() {
     return (
         <div className={styles.mainContainer}>
             <CardsList cards={cards || []} deleteCard={deleteCard} chooseCardToEdit={chooseCard} addCard={handleAddCard} />
+            {!editedCard && !isNewCardCreated && <EditDeck />}
             {editedCard && !isNewCardCreated && <EditCard card={editedCard} />}
             {isNewCardCreated && <CreateCard deck_id={params.id || ""} />}
         </div>

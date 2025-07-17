@@ -5,18 +5,26 @@ import useStyles from './LanguagesField.styles';
 const LanguaguesField = (props: LanguagesFieldProps) => {
 
     const LANGUAGES = ["English", "Polish", "Spanish", "French", "German", "Chinese", "Japanese"];
-    const [indexOfChosenLanguage, setIndexOfChosenLanguage] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const styles = useStyles()
-
     return (
         <>
             <p className={styles.languageChoice} onClick={() => setIsVisible(!isVisible)}>{props.language}</p>
             <div className={styles.languagesList}>
-                {isVisible && LANGUAGES.filter((_, index) => index != indexOfChosenLanguage).map((language) => (
-                    <p className={styles.languageOption}
-                        onClick={() => { props.changeLanguage(language), setIndexOfChosenLanguage(LANGUAGES.indexOf(language)), setIsVisible(false) }}>{language}</p>
-                ))}
+                {isVisible && LANGUAGES
+                    .filter(language => language !== props.language)
+                    .map(language => (
+                        <p
+                            key={language}
+                            className={styles.languageOption}
+                            onClick={() => {
+                                props.changeLanguage(language);
+                                setIsVisible(false);
+                            }}
+                        >
+                            {language}
+                        </p>
+                    ))}
             </div>
         </>
     );
