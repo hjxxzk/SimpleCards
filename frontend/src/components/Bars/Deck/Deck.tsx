@@ -28,7 +28,7 @@ const Deck = (props: DeckProps) => {
 
     return (
         <div className={styles.deckContainer}>
-            <div className={`${styles.deck} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} onClick={() => { console.log("tu"), navigate(REVIEW_DECK_PAGE) }} >
+            <div className={`${styles.deck} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} onClick={() => { navigate(REVIEW_DECK_PAGE) }} >
                 <div className={styles.deckHeader}>
                     <strong>{props.name}</strong>
                     <div className={styles.deckActions}>
