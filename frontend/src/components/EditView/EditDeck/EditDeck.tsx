@@ -140,7 +140,7 @@ function EditDeck() {
                 </div>
             </div>
             <div className={styles.buttonContainer}>
-                {hasAnythingChanged() && <button className={styles.createDeckButton} onClick={() => handleDeckEdit()}>EDIT DECK</button>}
+                {hasAnythingChanged() && <button className={styles.editDeckButton} onClick={() => handleDeckEdit()}>EDIT DECK</button>}
             </div>
         </div >
     )

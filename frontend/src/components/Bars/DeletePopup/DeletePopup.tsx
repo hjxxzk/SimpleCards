@@ -8,7 +8,7 @@ const DeletePopup = (props: DeletePopupProps) => {
     return (
         <div className={styles.popup}>
             <div className={styles.popupMessage}>
-                <strong>{props.title}</strong>
+                <strong className="text-md xl:text-lg">{props.title}</strong>
                 {props.message}
             </div>
             <div className={styles.buttonsContainer}>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import type { CardProps } from './CardProps.types';
 import { Trash2 } from 'lucide-react';
@@ -10,6 +10,25 @@ const Card = (props: CardProps) => {
     const styles = useStyles();
     const [isPopupVisible, setPopupVisible] = useState(false);
     const params = useParams()
+
+    const [isShorterMessageVisible, setIsShorterMessageVisible] = useState(true);
+    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
+    const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
+    match.addEventListener('change', (event) => {
+        if (event.matches) {
+            setIsShorterMessageVisible(true);
+        } else {
+            setIsShorterMessageVisible(false);
+        }
+    });
+
+    useEffect(() => {
+        if (match.matches) {
+            setIsShorterMessageVisible(true);
+        } else {
+            setIsShorterMessageVisible(false);
+        }
+    }, [match.matches]);
 
     function handleDeleteDeck() {
         setPopupVisible(true);
@@ -31,7 +50,7 @@ const Card = (props: CardProps) => {
                 </div>
                 <p>{props.word}</p>
             </div>
-            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message='Do you want to delete this card?' title="Delete Card" />}
+            {isPopupVisible && <DeletePopup handleNo={closePopup} handleYes={confirmDeleteDeck} message={isShorterMessageVisible ? 'Do you want to delete this card?' : 'Delete?'} title="Delete Card" />}
         </div>
     );
 }

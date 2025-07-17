@@ -41,7 +41,7 @@ const Deck = (props: DeckProps) => {
                 <strong className={styles.language}>{props.sourceLanguage} | {props.translationLanguage}</strong>
 
             </div>
-            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title="Delete Deck" message="Are you sure you want to delete this deck?" />}
+            {isPopupVisible && <DeleteDeckPopup handleNo={closePopup} handleYes={confirmDeleteDeck} title="Delete Deck" message="Do you want to delete this deck?" />}
         </div>
     );
 }

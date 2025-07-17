@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import useStyles from './CardsList.styles';
 import NewElement from '../../Bars/NewElement/NewElement';
 import Card from '../Card/Card';
@@ -10,6 +11,25 @@ const CardsList = (props: CardListProps) => {
     const CARDS = import.meta.env.VITE_CARDS;
     const styles = useStyles();
     const navigate = useNavigate();
+
+    const [isBigScreen, setIsBigScreen] = useState(true);
+    const MEDIUM_OR_LARGER_SCREEN = "(width > 1024px)";
+    const match = window.matchMedia(MEDIUM_OR_LARGER_SCREEN)
+    match.addEventListener('change', (event) => {
+        if (event.matches) {
+            setIsBigScreen(true);
+        } else {
+            setIsBigScreen(false);
+        }
+    });
+
+    useEffect(() => {
+        if (match.matches) {
+            setIsBigScreen(true);
+        } else {
+            setIsBigScreen(false);
+        }
+    }, [match.matches]);
 
     function handleDeleteCard(cardId: number) {
         if (props.cards) {
@@ -28,9 +48,9 @@ const CardsList = (props: CardListProps) => {
 
     return (
         <div className={styles.sidebar}>
-            <strong>Cards in this deck: </strong>
-            <hr className={styles.separator} />
-            <div className={styles.cardsList}>
+            {isBigScreen && <strong>Cards in this deck: </strong>}
+            {isBigScreen && <hr className={styles.separator} />}
+            <div className={isBigScreen ? styles.cardsListFlex : styles.cardsListGrid}>
                 <NewElement navigate={props.addCard} />
                 {props.cards && props.cards.map((card) => (
                     <div onClick={() => navigate(`/edit/${card.deck_id}/${card._id}`)}>
