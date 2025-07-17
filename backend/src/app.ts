@@ -78,7 +78,7 @@ app.patch(DECK_BY_ID, async (req, res) => {
     try {
         const deck = await Deck.findByIdAndUpdate(deckId, updatedDeck, { new: true });
         if (!deck) {
-            return res.status(404).json({ message: 'Card not found' });
+            return res.status(404).json({ message: 'Deck not found' });
         }
         res.json({ message: "Card updated successfully" });
     } catch (err) {
