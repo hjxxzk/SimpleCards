@@ -80,7 +80,7 @@ app.patch(DECK_BY_ID, async (req, res) => {
         if (!deck) {
             return res.status(404).json({ message: 'Deck not found' });
         }
-        res.json({ message: "Card updated successfully" });
+        res.json({ message: "Deck updated successfully" });
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
