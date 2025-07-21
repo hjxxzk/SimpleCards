@@ -38,6 +38,9 @@ function ReviewView() {
     }
 
     function handleRememberedCard(_id: number) {
+        if (cards && currentCardIndex < cards.length) {
+            setcurrentCardIndex(currentCardIndex + 1);
+        }
     }
 
 
