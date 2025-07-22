@@ -1,4 +1,4 @@
-name: Project Build
+name: Tests
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [23.x]
 
     steps:
       - name: Checkout repository
