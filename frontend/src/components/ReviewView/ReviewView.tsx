@@ -3,7 +3,7 @@ import ReviewCard from "./ReviewCard/ReviewCard";
 import useStyles from "./ReviewView.styles";
 import type { CardProps } from "../EditView/Card/CardProps.types";
 import { useParams } from "react-router-dom";
-import { shuffleCards } from "../../services/CardReviewService";
+import { addCardToRepeatInRandomPlace, findLastMatch, shuffleCards } from "../../services/CardReviewService";
 
 function ReviewView() {
 
@@ -15,10 +15,8 @@ function ReviewView() {
     const [currentCardIndex, setcurrentCardIndex] = useState(0);
 
     useEffect(() => {
-        if (params) {
-            fetchCards();
-        }
-    }, [params]);
+        fetchCards();
+    }, []);
 
     const fetchCards = async () => {
         try {
@@ -32,8 +30,8 @@ function ReviewView() {
         }
     };
 
-    function prepareCards(cards: CardProps[]) {
-        const shuffledCards = shuffleCards(cards)
+    function prepareCards(fetchedCards: CardProps[]) {
+        const shuffledCards = shuffleCards(fetchedCards)
         setCards(shuffledCards)
     }
 
@@ -45,6 +43,12 @@ function ReviewView() {
 
 
     function handleNotRememberedCard(_id: number) {
+        if (cards) {
+            const cardToBeRepeated = findLastMatch(_id, cards);
+            if (cardToBeRepeated) {
+                addCardToRepeatInRandomPlace(cardToBeRepeated, cards);
+            }
+        }
     }
 
     return (
