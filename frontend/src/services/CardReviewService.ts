@@ -20,23 +20,26 @@ export function findLastMatch(card_id: number, cards: CardProps[]): CardProps | 
 const MINIMUM_NUMBER_OF_CARDS_TO_SWAP = 3;
 
 
-export function addCardToRepeatInRandomPlace(cardToRepeat: CardProps, cards: CardProps[]) {
+export function addCardToRepeatInRandomPlace(cardToRepeat: CardProps, cards: CardProps[]): CardProps[] {
+    const cardsCopy = [...cards];
+    const cardToRepeatIndex = cardsCopy.lastIndexOf(cardToRepeat);
+    const middleOfCardsLeftToReview = cardToRepeatIndex + Math.ceil((cardsCopy.length - cardToRepeatIndex) / 2);
+    const newRandomIndex = returnRandomIndexBetweenGivenEdgepoints(middleOfCardsLeftToReview, cardsCopy.length);
 
-    const cardToRepeatIndex = cards.lastIndexOf(cardToRepeat);
-    const middleOfCardsLeftToReview = cardToRepeatIndex + Math.ceil((cards.length - cardToRepeatIndex) / 2);
-    const newRandomIndex = returnRandomIndexBetweenGivenEdgepoints(middleOfCardsLeftToReview, cards.length);
+    cardsCopy.push(cardToRepeat);
 
-    cards.push(cardToRepeat);
-
-    if (areThereEnoughCardsToSwapPlaces(cardToRepeatIndex, cards)) {
-        swapCardsToPutRepeatedCardOnNewRandomIndex(newRandomIndex, cards);
+    if (areThereEnoughCardsToSwapPlaces(cardToRepeatIndex, cardsCopy)) {
+        return swapCardsToPutRepeatedCardOnNewRandomIndex(newRandomIndex, cardsCopy);
+    } else {
+        return cardsCopy;
     }
 }
 
-function swapCardsToPutRepeatedCardOnNewRandomIndex(chosenIndex: number, cards: CardProps[]) {
+function swapCardsToPutRepeatedCardOnNewRandomIndex(chosenIndex: number, cards: CardProps[]): CardProps[] {
     for (let i = cards.length - 1; i > chosenIndex; i--) {
         [cards[i], cards[i - 1]] = [cards[i - 1], cards[i]];
     }
+    return cards;
 }
 
 function areThereEnoughCardsToSwapPlaces(cardToRepeatIndex: number, cards: CardProps[]) {
