@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 export const RegisterView = () => {
 
     const logoPath = window.location.protocol + "//" + window.location.host + "/images/logo.png";
+    const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
+    const USERS = import.meta.env.VITE_USERS;
     const AT_LEAST_12_CHARACTERS = /^.{12,}$/;
     const AT_LEAST_3_CHARACTERS = /^.{3,}$/;
     const AT_LEAST_ONE_NUMBER = /.*[0-9].*/;
@@ -14,6 +16,7 @@ export const RegisterView = () => {
     const LOGIN_PAGE = "/login"
     const ICON_COLOR = "black";
     const ICON_SIZE = 20;
+    const USER_NOT_FOUND = 404;
     const [nickname, setNickname] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -31,6 +34,44 @@ export const RegisterView = () => {
         checkIfPasswordHasAtLeastOneSpecialCharacter();
         isValidPassword();
     }, [password]);
+
+    async function handleCreateUser() {
+        if (await doesTheUserAlreadyExist()) {
+            alert("Nickname already taken! Please choose another one");
+        } else {
+            saveUser();
+        }
+    }
+
+    async function doesTheUserAlreadyExist(): Promise<Boolean> {
+        const response = await fetch(`${DB_ADDRESS}${USERS}/${nickname}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.status === USER_NOT_FOUND) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    async function saveUser() {
+        fetch(`${DB_ADDRESS}${USERS}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nickname: nickname,
+                password: password
+            })
+        })
+            .then(response => response.json())
+            .then(data => localStorage.setItem("user_id", data.id));
+
+    }
 
     function checkIfPasswordIsLongEnough() {
         if (AT_LEAST_12_CHARACTERS.test(password)) {
@@ -107,10 +148,10 @@ export const RegisterView = () => {
                 </div>
                 <div className={styles.conditionText}>
                     {isAtLeastOneSpecialCharacter ? <Check color={ICON_COLOR} size={ICON_SIZE} /> : <X color={ICON_COLOR} size={ICON_SIZE} />}
-                    At least special character
+                    At least one special character
                 </div>
             </div>
-            {isValidPassword() && isValidPassword() && arePasswordsTheSame() && <button className={styles.createAccountButton}>CREATE ACCOUNT</button>}
+            {isValidPassword() && isValidNickname() && arePasswordsTheSame() && <button className={styles.createAccountButton} onClick={() => handleCreateUser()}>CREATE ACCOUNT</button>}
         </div>
     );
 
