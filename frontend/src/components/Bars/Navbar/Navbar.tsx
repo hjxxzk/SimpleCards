@@ -12,7 +12,7 @@ const Navbar = (props: NavbarProps) => {
     const navigate = useNavigate();
     const HOME_PAGE = "/";
     const USER_PAGE = "/user";
-    const logoPath = window.location.protocol + "//" + window.location.host + "/images/logo.png";
+    const logoPath = window.location.protocol + "//" + window.location.host + "/images/logo_big.png";
 
     return (
         <>

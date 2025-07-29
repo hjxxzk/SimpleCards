@@ -5,6 +5,8 @@ import EditView from './components/EditView/EditView';
 import UserView from './components/UserView/UserView';
 import CreateDeckView from './components/CreateDeckView/CreateDeckView';
 import Layout from './Layout';
+import LoginView from './components/LoginView/LoginView';
+import { RegisterView } from './components/RegisterView/RegisterView';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route path="/create" element={<CreateDeckView />} />
         </Route>
         <Route path="/user" element={<UserView />} />
+        <Route path="/login" element={<LoginView />} />
+        <Route path="/register" element={<RegisterView />} />
       </Routes>
     </BrowserRouter>
   )

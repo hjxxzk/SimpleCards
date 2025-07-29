@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addCardToRepeatInRandomPlace, findLastMatch, shuffleCards } from "../../services/CardReviewService";
 import { useWindowSize } from 'react-use'
 import Confetti from 'react-confetti'
+import { Repeat } from "lucide-react";
 
 function ReviewView() {
 
@@ -15,6 +16,7 @@ function ReviewView() {
     const params = useParams();
     const navigate = useNavigate();
     const [cards, setCards] = useState<CardProps[]>();
+    const [fetchedCards, setfetchedCards] = useState<CardProps[]>();
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [areCongratulationsVisible, setAreCongratulationsVisible] = useState(false);
     const [isReviewCompleted, setIsReviewCompleated] = useState(false);
@@ -23,6 +25,9 @@ function ReviewView() {
 
     useEffect(() => {
         fetchCards();
+        setIsReviewCompleated(false);
+        setAreCongratulationsVisible(false);
+        setCurrentCardIndex(0);
     }, [params.id]);
 
     useEffect(() => {
@@ -38,6 +43,7 @@ function ReviewView() {
             const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`);
             const fetchedCards = await res.json();
             if (fetchedCards) {
+                setfetchedCards(fetchedCards);
                 prepareCards(fetchedCards)
             }
         } catch (err) {
@@ -59,7 +65,6 @@ function ReviewView() {
         }
     }
 
-
     function handleNotRememberedCard(_id: number) {
         if (cards) {
             const cardToBeRepeated = findLastMatch(_id, cards);
@@ -71,15 +76,27 @@ function ReviewView() {
         }
     }
 
+    function repeatReview() {
+        if (fetchedCards) {
+            prepareCards(fetchedCards);
+            setCurrentCardIndex(0);
+            setIsReviewCompleated(false);
+        }
+    }
+
     return (
         <div className={styles.mainContainer}>
-            {(cards?.length && !isReviewCompleted) ? <ReviewCard _id={cards[currentCardIndex]._id} word={cards[currentCardIndex].word} translation={cards[currentCardIndex].translation} handleYes={handleRememberedCard} handleNo={handleNotRememberedCard} /> : <div className={styles.noContentMessage}>Start by adding cards to your deck!<button className={styles.addCardsButton} onClick={() => { navigate(EDIT_DECK_SCREEN) }}>Add cards<button></button></button></div>}
+            {(cards?.length && !isReviewCompleted) ? <ReviewCard _id={cards[currentCardIndex]._id} word={cards[currentCardIndex].word} translation={cards[currentCardIndex].translation} handleYes={handleRememberedCard} handleNo={handleNotRememberedCard} /> : null}
+            {isReviewCompleted && !areCongratulationsVisible && <div className={styles.repeatButton} onClick={() => repeatReview()}><Repeat color="gray" size={35} /></div>}
+            {(params.id && cards?.length === 0) && <div className={styles.noContentMessage}>Start by adding cards to your deck!<button className={styles.addCardsButton} onClick={() => { navigate(EDIT_DECK_SCREEN) }}>Add cards</button></div>}
+            {!params.id && <div className={styles.noContentMessage}>Start by choosing a deck or creating a new one!</div>}
+
             {areCongratulationsVisible && <>
                 <Confetti
                     width={width}
                     height={height}
                 />
-                <div className="font-semibold text-xl">Congratulations!</div>
+                <div className={styles.congratulations}>Congratulations!</div>
             </>
             }
         </div>

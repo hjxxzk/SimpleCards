@@ -1,6 +1,6 @@
 const useStyles = () => {
     return {
-        mainContainer: "w-full f-full flex flex-col bg-white rounded-tl-3xl shadow-lg px-5 sm:px-15 my-5 mx-3 md:px-10 md:py-8 md:mx-5 xl:mx-5 xl:my-3 lg:py-5 lg:px-10 xl:py-5 xl:px-10 justify-center lg:my-5 lg:mr-5 2xl:pl-15 rounded-3xl",
+        mainContainer: "w-full lg:w-4/5 3xl:w-5/6 flex flex-col bg-white rounded-tl-3xl shadow-lg px-5 sm:px-15 md:px-10 md:py-8 lg:py-5 lg:px-10 xl:py-5 xl:px-10 mb-5 my-3 mx-5 lg:my-5 lg:mr-10 justify-center 2xl:pl-15 rounded-3xl",
         title: "text-2xl font-bold text-center mt-5",
         separator: "h-0.5 border-t-0 bg-black mt-8 mb-7",
         form: "flex gap-5 w-full h-3/5 py-5 pt-15",

@@ -1,5 +1,7 @@
 import type { CardProps } from "../components/EditView/Card/CardProps.types";
 
+const MINIMUM_NUMBER_OF_CARDS_TO_SWAP = 3;
+
 export function shuffleCards(cards: CardProps[]) {
     for (let i = cards.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -16,9 +18,6 @@ export function findLastMatch(card_id: number, cards: CardProps[]): CardProps | 
     }
     return null;
 }
-
-const MINIMUM_NUMBER_OF_CARDS_TO_SWAP = 3;
-
 
 export function addCardToRepeatInRandomPlace(cardToRepeat: CardProps, cards: CardProps[]): CardProps[] {
     const cardsCopy = [...cards];
