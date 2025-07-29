@@ -14,6 +14,7 @@ const USERS_BY_NICKNAME = '/api/users/:nickname';
 
 require('dotenv').config()
 const app = express();
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
 app.use(express.json());
@@ -31,7 +32,8 @@ app.listen(PORT, () => {
 
 app.post(USERS, async (req, res) => {
     try {
-        const newUser = new User(req.body);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = new User({ nickname: req.body.nickname, password: hashedPassword });
         const savedUser = await newUser.save()
         res.status(201).json({ id: savedUser._id });
     } catch (error) {
