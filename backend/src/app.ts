@@ -41,6 +41,22 @@ app.post(USERS, async (req, res) => {
     }
 });
 
+app.post('users/login', async (req, res) => {
+    const user = await User.find({ nickname: req.body.nickname });
+    if (user == null) {
+        return res.status(400).send('Cannot find user');
+    }
+    try {
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            res.send('Success');
+        } else {
+            res.send('Not allowed');
+        }
+    } catch {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 app.get(USERS_BY_NICKNAME, async (req, res) => {
     try {
         const exists = await User.exists({ nickname: req.params.nickname });
