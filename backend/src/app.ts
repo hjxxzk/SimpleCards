@@ -11,6 +11,7 @@ const CARDS = '/api/cards/';
 const CARD_BY_ID = '/api/cards/:id';
 const USERS = '/api/users';
 const USERS_BY_NICKNAME = '/api/users/:nickname';
+const LOGIN = '/api/users/login'
 
 require('dotenv').config()
 const app = express();
@@ -41,16 +42,16 @@ app.post(USERS, async (req, res) => {
     }
 });
 
-app.post('users/login', async (req, res) => {
-    const user = await User.find({ nickname: req.body.nickname });
+app.post(LOGIN, async (req, res) => {
+    const user = await User.findOne({ nickname: req.body.nickname });
     if (user == null) {
-        return res.status(400).send('Cannot find user');
+        return res.status(400).json({ message: 'Cannot find user' });
     }
     try {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            res.send('Success');
+            return res.status(200).json({ message: 'Successfully authenticated' });
         } else {
-            res.send('Not allowed');
+            return res.status(404).json({ message: 'Credentials incorrect' });
         }
     } catch {
         res.status(500).json({ message: 'Server error' });
