@@ -10,6 +10,9 @@ export const LoginForm = () => {
     const [login, setLogin] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
+    console.log(login)
+    console.log(password)
+
     return (
         <div className={styles.formContainer}>
             <h1 className={styles.title}>Welcome back!</h1>

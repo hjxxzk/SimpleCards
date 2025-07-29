@@ -63,7 +63,7 @@ const CardsList = (props: CardListProps) => {
                         />
                     </div>
                 ))}
-                {!props.cards && <p className={styles.text}>Start by adding your first card!</p>}
+                {props.cards.length === 0 && <p className={styles.text}>Start by adding your first card!</p>}
             </div >
         </div >
     );
