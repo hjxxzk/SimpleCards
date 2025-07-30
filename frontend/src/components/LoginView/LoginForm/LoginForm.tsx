@@ -7,6 +7,7 @@ export const LoginForm = () => {
     const styles = useStyles();
     const navigate = useNavigate();
     const REGISTER_VIEW = "/register";
+    const LOGGED_IN_SUCCESSFULLY = 200;
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const USERS = import.meta.env.VITE_USERS;
     const [nickname, setNickname] = useState<string>("");
@@ -21,7 +22,7 @@ export const LoginForm = () => {
     }
 
     async function logIn() {
-        const reponse = await fetch(`${DB_ADDRESS}${USERS}/login`, {
+        const response = await fetch(`${DB_ADDRESS}${USERS}/login`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -31,8 +32,13 @@ export const LoginForm = () => {
                 password: password
             })
         });
-        console.log(reponse.status)
+
+        if (response.status === LOGGED_IN_SUCCESSFULLY) {
+            const data = await response.json();
+            localStorage.setItem("accessToken", data.accessToken);
+        }
     }
+
 
     function areBothFieldsFilled() {
         return nickname && password;

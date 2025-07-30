@@ -49,11 +49,12 @@ app.post(LOGIN, async (req, res) => {
     }
     try {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            return res.status(200).json({ message: 'Successfully authenticated' });
+            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+            return res.status(200).json({ accessToken: accessToken });
         } else {
             return res.status(404).json({ message: 'Credentials incorrect' });
         }
-    } catch {
+    } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
 });
