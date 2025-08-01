@@ -46,6 +46,7 @@ app.post(USERS, async (req, res) => {
         const savedUser = await newUser.save()
         const accessToken = JWT.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
         const refreshToken = JWT.sign({ id: savedUser._id }, process.env.REFRESH_TOKEN_SECRET);
+        refreshTokens.push(refreshToken);
         res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -61,6 +62,7 @@ app.post(LOGIN, async (req, res) => {
         if (await bcrypt.compare(req.body.password, user.password)) {
             const accessToken = generateAccessToken(user._id);
             const refreshToken = JWT.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET);
+            refreshTokens.push(refreshToken);
             return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
             return res.status(404).json({ message: 'Credentials incorrect' });
@@ -101,6 +103,20 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
         res.status(401).send('Please authenticate');
     }
 };
+
+let refreshTokens: string[] = [];
+
+app.post("/token", (req, res) => {
+    const refreshToken = req.body.refreshToken
+    if (refreshToken == null) return res.status(401).json({ message: 'Not found' });
+    if (!refreshTokens.includes(refreshToken)) return res.status(403).json({ message: 'Not authorized' });
+    JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: jwt.VerifyErrors | null, id: any) => {
+        if (err) return res.status(403).json({ message: 'Not authorized' });
+        console.log(id.id)
+        // const accessToken = generateAccessToken(id.id);
+        // return res.status(200).json({ accessToken: accessToken });
+    })
+})
 
 app.get(DECKS, authenticate, async (req, res) => {
     const user_id = (req as CustomRequest).id;
