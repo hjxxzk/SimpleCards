@@ -14,6 +14,7 @@ const CARD_BY_ID = '/api/cards/:id';
 const USERS = '/api/users';
 const USERS_BY_NICKNAME = '/api/users/:nickname';
 const LOGIN = '/api/users/login'
+const TOKEN = '/api/token'
 
 require('dotenv').config()
 const app = express();
@@ -106,15 +107,14 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
 
 let refreshTokens: string[] = [];
 
-app.post("/token", (req, res) => {
+app.post(TOKEN, (req, res) => {
     const refreshToken = req.body.refreshToken
     if (refreshToken == null) return res.status(401).json({ message: 'Not found' });
     if (!refreshTokens.includes(refreshToken)) return res.status(403).json({ message: 'Not authorized' });
     JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: jwt.VerifyErrors | null, id: any) => {
         if (err) return res.status(403).json({ message: 'Not authorized' });
-        console.log(id.id)
-        // const accessToken = generateAccessToken(id.id);
-        // return res.status(200).json({ accessToken: accessToken });
+        const accessToken = generateAccessToken(id.id);
+        return res.status(200).json({ accessToken: accessToken });
     })
 })
 
