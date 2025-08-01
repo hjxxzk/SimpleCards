@@ -1,17 +1,23 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
 import Deck from './models/Deck';
-import Card from './models/Card'
+import Card from './models/Card';
+import User from './models/User';
 import cors from 'cors';
 
 const DECKS = '/api/decks/';
 const DECK_BY_ID = '/api/decks/:id';
 const CARDS = '/api/cards/';
 const CARD_BY_ID = '/api/cards/:id';
+const USERS = '/api/users';
+const USERS_BY_NICKNAME = '/api/users/:nickname';
+const LOGIN = '/api/users/login'
 
-dotenv.config();
+require('dotenv').config()
 const app = express();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+
 app.use(express.json());
 app.use(cors());
 
@@ -20,10 +26,52 @@ mongoose.connect(process.env.MONGO_URI!)
     .catch(err => console.error('MongoDB error:', err));
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+app.post(USERS, async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = new User({ nickname: req.body.nickname, password: hashedPassword });
+        const savedUser = await newUser.save()
+        res.status(201).json({ id: savedUser._id });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.post(LOGIN, async (req, res) => {
+    const user = await User.findOne({ nickname: req.body.nickname });
+    if (user == null) {
+        return res.status(400).json({ message: 'Cannot find user' });
+    }
+    try {
+        if (await bcrypt.compare(req.body.password, user.password)) {
+            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+            return res.status(200).json({ accessToken: accessToken });
+        } else {
+            return res.status(404).json({ message: 'Credentials incorrect' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.get(USERS_BY_NICKNAME, async (req, res) => {
+    try {
+        const exists = await User.exists({ nickname: req.params.nickname });
+        if (!exists) {
+            return res.status(404).json({ message: 'User not found' });
+        } else {
+            return res.status(200).json({ message: 'User exists' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 app.get(DECKS, async (req, res) => {
     try {
