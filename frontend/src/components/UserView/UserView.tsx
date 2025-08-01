@@ -16,7 +16,7 @@ const UserView = () => {
     return (
         <div className={styles.logOutButton} onClick={logOut}>
             <h1>Wyloguj się</h1>
-            <LogOut color="black" size={25} onClick={() => console.log("dupa")} />
+            <LogOut color="black" size={25} />
         </div>
     );
 }

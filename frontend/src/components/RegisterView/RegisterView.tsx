@@ -69,8 +69,10 @@ export const RegisterView = () => {
             })
         })
             .then(response => response.json())
-            .then(data => localStorage.setItem("accessToken", data.accessToken));
-
+            .then(data => {
+                localStorage.setItem("accessToken", data.accessToken),
+                    localStorage.setItem("refreshToken", data.refreshToken)
+            });
     }
 
     function checkIfPasswordIsLongEnough() {

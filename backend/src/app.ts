@@ -45,7 +45,8 @@ app.post(USERS, async (req, res) => {
         const newUser = new User({ nickname: req.body.nickname, password: hashedPassword });
         const savedUser = await newUser.save()
         const accessToken = JWT.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
-        res.status(201).json({ accessToken: accessToken });
+        const refreshToken = JWT.sign({ id: savedUser._id }, process.env.REFRESH_TOKEN_SECRET);
+        res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -58,8 +59,9 @@ app.post(LOGIN, async (req, res) => {
     }
     try {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            const accessToken = JWT.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
-            return res.status(200).json({ accessToken: accessToken });
+            const accessToken = generateAccessToken(user._id);
+            const refreshToken = JWT.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET);
+            return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
             return res.status(404).json({ message: 'Credentials incorrect' });
         }
@@ -67,6 +69,10 @@ app.post(LOGIN, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+function generateAccessToken(id: string) {
+    return JWT.sign({ id: id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
+}
 
 app.get(USERS_BY_NICKNAME, async (req, res) => {
     try {
