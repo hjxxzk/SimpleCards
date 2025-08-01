@@ -14,6 +14,7 @@ export const RegisterView = () => {
     const AT_LEAST_ONE_BIG_LETTER = /[A-Z]/;
     const AT_LEAST_ONE_SPECIAL_CHARACTER = /[!@#$%^&)(-_=+*]/;
     const LOGIN_PAGE = "/login"
+    const HOME_PAGE = "/";
     const ICON_COLOR = "black";
     const ICON_SIZE = 20;
     const USER_NOT_FOUND = 404;
@@ -72,7 +73,8 @@ export const RegisterView = () => {
             .then(data => {
                 localStorage.setItem("accessToken", data.accessToken),
                     localStorage.setItem("refreshToken", data.refreshToken)
-            });
+            })
+            .then(() => navigate(HOME_PAGE));
     }
 
     function checkIfPasswordIsLongEnough() {

@@ -6,6 +6,7 @@ import Deck from './models/Deck';
 import Card from './models/Card';
 import User from './models/User';
 import cors from 'cors';
+import Token from './models/Token';
 
 const DECKS = '/api/decks/';
 const DECK_BY_ID = '/api/decks/:id';
@@ -15,6 +16,7 @@ const USERS = '/api/users';
 const USERS_BY_NICKNAME = '/api/users/:nickname';
 const LOGIN = '/api/users/login'
 const TOKEN = '/api/token'
+const LOGOUT = '/api/logout';
 
 require('dotenv').config()
 const app = express();
@@ -47,7 +49,7 @@ app.post(USERS, async (req, res) => {
         const savedUser = await newUser.save()
         const accessToken = JWT.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
         const refreshToken = JWT.sign({ id: savedUser._id }, process.env.REFRESH_TOKEN_SECRET);
-        refreshTokens.push(refreshToken);
+        await saveRefreshToken(refreshToken);
         res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -63,7 +65,7 @@ app.post(LOGIN, async (req, res) => {
         if (await bcrypt.compare(req.body.password, user.password)) {
             const accessToken = generateAccessToken(user._id);
             const refreshToken = JWT.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET);
-            refreshTokens.push(refreshToken);
+            await saveRefreshToken(refreshToken);
             return res.status(200).json({ accessToken: accessToken, refreshToken: refreshToken });
         } else {
             return res.status(404).json({ message: 'Credentials incorrect' });
@@ -105,17 +107,42 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-let refreshTokens: string[] = [];
+async function saveRefreshToken(refreshToken: string) {
+    try {
+        const newToken = new Token({ token: refreshToken });
+        await newToken.save();
+    } catch (error) {
+        console.log("Couldn't save the refresh token")
+    }
+}
+
+async function deleteRefreshToken(refreshToken: string) {
+    try {
+        await Token.deleteOne({ token: refreshToken });
+    } catch (error) {
+        console.log("Couldn't delete the refresh token")
+    }
+}
+
+async function isRefreshTokenValid(refreshToken: string) {
+    return await Token.exists({ token: refreshToken });
+}
 
 app.post(TOKEN, (req, res) => {
     const refreshToken = req.body.refreshToken
     if (refreshToken == null) return res.status(401).json({ message: 'Not found' });
-    if (!refreshTokens.includes(refreshToken)) return res.status(403).json({ message: 'Not authorized' });
+    if (!isRefreshTokenValid(refreshToken)) return res.status(403).json({ message: 'Not authorized' });
     JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err: jwt.VerifyErrors | null, id: any) => {
         if (err) return res.status(403).json({ message: 'Not authorized' });
         const accessToken = generateAccessToken(id.id);
         return res.status(200).json({ accessToken: accessToken });
     })
+})
+
+app.delete(LOGOUT, async (req, res) => {
+    const refreshToken = req.body.refreshToken;
+    await deleteRefreshToken(refreshToken);
+    res.status(204).json({ message: 'Logout successfull' });
 })
 
 app.get(DECKS, authenticate, async (req, res) => {
