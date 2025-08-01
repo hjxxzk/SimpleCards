@@ -32,11 +32,12 @@ function EditDeck() {
 
     useEffect(() => {
         async function fetchDeck() {
-            await fetch(`${DB_ADDRESS}${DECKS}${params.id}`)
+            await fetch(`${DB_ADDRESS}${DECKS}${params.id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem("accessToken")}` } })
                 .then(res => res.json())
                 .then(dane => {
                     setEditedDeck({
                         _id: dane._id,
+                        user_id: dane.user_id,
                         name: dane.name,
                         description: dane.description,
                         sourceLanguage: dane.sourceLanguage,
@@ -103,6 +104,7 @@ function EditDeck() {
         await fetch(`${DB_ADDRESS}${DECKS}${params.id}`, {
             method: 'PATCH',
             headers: {
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ updatedDeck })

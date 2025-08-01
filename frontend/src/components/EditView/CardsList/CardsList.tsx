@@ -41,6 +41,9 @@ const CardsList = (props: CardListProps) => {
     async function requestDelete(cardId: number) {
         await fetch(`${DB_ADDRESS}${CARDS}/${cardId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+            }
         })
             .then(res => res.json())
             .catch(err => console.error('Error:', err));

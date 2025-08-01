@@ -36,7 +36,7 @@ function EditView() {
     useEffect(() => {
         const fetchCards = async () => {
             try {
-                const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`);
+                const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem("accessToken")}` } });
                 const data = await res.json();
                 setCards(data.reverse());
             } catch (err) {

@@ -40,7 +40,7 @@ function ReviewView() {
 
     const fetchCards = async () => {
         try {
-            const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`);
+            const res = await fetch(`${DB_ADDRESS}${CARDS}?search=${params.id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem("accessToken")}` } });
             const fetchedCards = await res.json();
             if (fetchedCards) {
                 setfetchedCards(fetchedCards);
