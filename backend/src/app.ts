@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import jwt, { Secret } from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
 import Deck from './models/Deck';
 import Card from './models/Card';
 import User from './models/User';
@@ -16,7 +18,13 @@ const LOGIN = '/api/users/login'
 require('dotenv').config()
 const app = express();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const JWT = require('jsonwebtoken')
+const SECRET_KEY: Secret = process.env.ACCESS_TOKEN_SECRET || "";
+
+interface CustomRequest extends Request {
+    id?: string;
+    token?: any;
+}
 
 app.use(express.json());
 app.use(cors());
@@ -36,7 +44,8 @@ app.post(USERS, async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const newUser = new User({ nickname: req.body.nickname, password: hashedPassword });
         const savedUser = await newUser.save()
-        res.status(201).json({ id: savedUser._id });
+        const accessToken = JWT.sign({ id: savedUser._id }, process.env.ACCESS_TOKEN_SECRET);
+        res.status(201).json({ accessToken: accessToken });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
@@ -49,7 +58,7 @@ app.post(LOGIN, async (req, res) => {
     }
     try {
         if (await bcrypt.compare(req.body.password, user.password)) {
-            const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+            const accessToken = JWT.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET);
             return res.status(200).json({ accessToken: accessToken });
         } else {
             return res.status(404).json({ message: 'Credentials incorrect' });
@@ -58,6 +67,22 @@ app.post(LOGIN, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+
+        if (!token) {
+            return res.status(401).json({ message: 'Please authenticate' });;
+        }
+        const decoded = jwt.verify(token, SECRET_KEY);
+        (req as CustomRequest).id = (decoded as any).id;
+        next();
+    } catch (err) {
+        res.status(401).send('Please authenticate');
+    }
+};
+
 
 app.get(USERS_BY_NICKNAME, async (req, res) => {
     try {
@@ -73,9 +98,11 @@ app.get(USERS_BY_NICKNAME, async (req, res) => {
 });
 
 
-app.get(DECKS, async (req, res) => {
+app.get(DECKS, authenticate, async (req, res) => {
+    const user_id = (req as CustomRequest).id;
     try {
-        const data = await Deck.find();
+        const data = await Deck.find({ "user_id": user_id });
+        console.log(data)
         res.json(data);
     } catch (err) {
         res.status(500).json({ message: 'Server error' });

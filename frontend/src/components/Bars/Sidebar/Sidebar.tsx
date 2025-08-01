@@ -35,7 +35,13 @@ const Sidebar = () => {
     }
 
     useEffect(() => {
-        fetch(`${DB_ADDRESS}${DECKS}`)
+        fetch(`${DB_ADDRESS}${DECKS}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+                'Content-Type': 'application/json'
+            }
+        })
             .then(res => res.json())
             .then(dane => setDecks(dane.reverse()))
             .catch(err => console.error('Error:', err));
@@ -56,6 +62,7 @@ const Sidebar = () => {
                         description={deck.description}
                         sourceLanguage={deck.sourceLanguage}
                         translationLanguage={deck.translationLanguage}
+                        user_id={deck.user_id}
                         deleteDeck={handleDeleteDeck}
                     />
                 ))}

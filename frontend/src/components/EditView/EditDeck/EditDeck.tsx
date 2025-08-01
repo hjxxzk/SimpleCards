@@ -37,6 +37,7 @@ function EditDeck() {
                 .then(dane => {
                     setEditedDeck({
                         _id: dane._id,
+                        user_id: dane.user_id,
                         name: dane.name,
                         description: dane.description,
                         sourceLanguage: dane.sourceLanguage,
