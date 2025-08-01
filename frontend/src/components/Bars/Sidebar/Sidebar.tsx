@@ -3,16 +3,18 @@ import useStyles from "./Sidebar.styles";
 import NewElement from "../NewElement/NewElement";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Sidebar = () => {
 
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
     const DECKS = import.meta.env.VITE_DECKS;
     const CREATE_DECK_PAGE = "/create";
+    const HOME_PAGE = "/";
     const [decks, setDecks] = useState<DeckProps[]>();
     const styles = useStyles();
     const navigate = useNavigate()
+    const params = useParams();
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
@@ -29,8 +31,15 @@ const Sidebar = () => {
             }
         })
             .then(res => res.json())
+            .then(() => navigateAfterDeletion(deckId))
             .catch(err => console.error('Error:', err));
 
+    }
+
+    function navigateAfterDeletion(deckId: number) {
+        if (params.id === deckId.toString()) {
+            navigate(HOME_PAGE);
+        }
     }
 
     function handleAddDeck() {

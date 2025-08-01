@@ -36,7 +36,7 @@ export const LoginForm = () => {
         if (response.status === LOGGED_IN_SUCCESSFULLY) {
             const data = await response.json();
             localStorage.setItem("accessToken", data.accessToken);
-            console.log(localStorage.getItem("accessToken"))
+            navigate("/");
         }
     }
 
