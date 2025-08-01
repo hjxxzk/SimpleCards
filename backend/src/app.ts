@@ -68,6 +68,19 @@ app.post(LOGIN, async (req, res) => {
     }
 });
 
+app.get(USERS_BY_NICKNAME, async (req, res) => {
+    try {
+        const exists = await User.exists({ nickname: req.params.nickname });
+        if (!exists) {
+            return res.status(404).json({ message: 'User not found' });
+        } else {
+            return res.status(200).json({ message: 'User exists' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 const authenticate = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -83,26 +96,10 @@ const authenticate = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-
-app.get(USERS_BY_NICKNAME, async (req, res) => {
-    try {
-        const exists = await User.exists({ nickname: req.params.nickname });
-        if (!exists) {
-            return res.status(404).json({ message: 'User not found' });
-        } else {
-            return res.status(200).json({ message: 'User exists' });
-        }
-    } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    }
-});
-
-
 app.get(DECKS, authenticate, async (req, res) => {
     const user_id = (req as CustomRequest).id;
     try {
         const data = await Deck.find({ "user_id": user_id });
-        console.log(data)
         res.json(data);
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
@@ -110,7 +107,7 @@ app.get(DECKS, authenticate, async (req, res) => {
 });
 
 
-app.get(DECK_BY_ID, async (req, res) => {
+app.get(DECK_BY_ID, authenticate, async (req, res) => {
     try {
         const data = await Deck.findById(req.params.id);
         if (!data) {
@@ -123,7 +120,7 @@ app.get(DECK_BY_ID, async (req, res) => {
     }
 });
 
-app.delete(DECK_BY_ID, async (req, res) => {
+app.delete(DECK_BY_ID, authenticate, async (req, res) => {
     const deckId = req.params.id;
     try {
         const deletedDeck = await Deck.findByIdAndDelete(deckId);
@@ -136,20 +133,29 @@ app.delete(DECK_BY_ID, async (req, res) => {
     }
 });
 
-app.post(DECKS, async (req, res) => {
+app.post(DECKS, authenticate, async (req, res) => {
     try {
-        const newDeck = new Deck(req.body);
+        const user_id = (req as CustomRequest).id;
+        const { name, description, sourceLanguage, translationLanguage } = req.body;
+        const newDeck = new Deck({
+            name,
+            description,
+            sourceLanguage,
+            translationLanguage,
+            user_id
+        }
+        );
         const savedDeck = await newDeck.save()
         res.status(201).json({ id: savedDeck._id });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-app.patch(DECK_BY_ID, async (req, res) => {
+app.patch(DECK_BY_ID, authenticate, async (req, res) => {
     const deckId = req.params.id;
     const updatedDeck = req.body.updatedDeck;
-
     try {
         const deck = await Deck.findByIdAndUpdate(deckId, updatedDeck, { new: true });
         if (!deck) {
@@ -161,7 +167,7 @@ app.patch(DECK_BY_ID, async (req, res) => {
     }
 });
 
-app.get(CARDS, async (req, res) => {
+app.get(CARDS, authenticate, async (req, res) => {
     try {
         const searchWord = req.query.search
         const data = await Card.find({ deck_id: searchWord });
@@ -171,7 +177,7 @@ app.get(CARDS, async (req, res) => {
     }
 });
 
-app.post(CARDS, async (req, res) => {
+app.post(CARDS, authenticate, async (req, res) => {
     try {
         const newCard = new Card(req.body);
         const savedCard = await newCard.save();
@@ -181,7 +187,7 @@ app.post(CARDS, async (req, res) => {
     }
 });
 
-app.patch(CARDS + ':id', async (req, res) => {
+app.patch(CARDS + ':id', authenticate, async (req, res) => {
     const cardId = req.params.id;
     const updatedCard = req.body.updatedCard;
 
@@ -196,7 +202,7 @@ app.patch(CARDS + ':id', async (req, res) => {
     }
 });
 
-app.delete(CARD_BY_ID, async (req, res) => {
+app.delete(CARD_BY_ID, authenticate, async (req, res) => {
     const cardId = req.params.id;
     try {
         const deletedCard = await Card.findByIdAndDelete(cardId);

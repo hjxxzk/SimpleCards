@@ -51,11 +51,12 @@ function EditView() {
     }
 
 
-    function handleDeckCreation() {
+    async function handleDeckCreation() {
         if (isEverythingFilled()) {
-            fetch(`${DB_ADDRESS}${DECKS}`, {
+            await fetch(`${DB_ADDRESS}${DECKS}`, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({

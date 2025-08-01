@@ -24,6 +24,9 @@ const Sidebar = () => {
     function requestDelete(deckId: number) {
         fetch(`${DB_ADDRESS}${DECKS}${deckId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+            }
         })
             .then(res => res.json())
             .catch(err => console.error('Error:', err));

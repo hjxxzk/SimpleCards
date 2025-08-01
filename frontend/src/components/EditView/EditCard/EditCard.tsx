@@ -60,6 +60,7 @@ const EditCard = (props: EditCardProps) => {
         await fetch(`${DB_ADDRESS}${CARDS}/${props.card?._id}`, {
             method: 'PATCH',
             headers: {
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ updatedCard }),
