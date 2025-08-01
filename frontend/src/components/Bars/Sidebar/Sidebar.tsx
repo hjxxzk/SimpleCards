@@ -4,6 +4,7 @@ import NewElement from "../NewElement/NewElement";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
 import { useNavigate, useParams } from 'react-router-dom';
+import { refreshToken } from '../../../services/AuthService';
 
 const Sidebar = () => {
 
@@ -15,6 +16,7 @@ const Sidebar = () => {
     const styles = useStyles();
     const navigate = useNavigate()
     const params = useParams();
+    refreshToken();
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
