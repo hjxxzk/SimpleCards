@@ -31,3 +31,6 @@ jobs:
         run: |
           cd frontend
           npm run test
+      - name: test frontend
+        run: |
+          npm run coverage
