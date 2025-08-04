@@ -12,7 +12,7 @@ export const RegisterView = () => {
     const AT_LEAST_3_CHARACTERS = /^.{3,}$/;
     const AT_LEAST_ONE_NUMBER = /.*[0-9].*/;
     const AT_LEAST_ONE_BIG_LETTER = /[A-Z]/;
-    const AT_LEAST_ONE_SPECIAL_CHARACTER = /[!@#$%^&)(-_=+*]/;
+    const AT_LEAST_ONE_SPECIAL_CHARACTER = /[!@#$%^&)(-]/;
     const LOGIN_PAGE = "/login"
     const HOME_PAGE = "/";
     const ICON_COLOR = "black";
