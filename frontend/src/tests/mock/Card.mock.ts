@@ -8,22 +8,22 @@ export const cards: CardProps[] = [
     },
     {
         _id: 2,
-        word: "cat",
+        word: "dog",
         translation: "kot",
     },
     {
         _id: 3,
-        word: "cat",
+        word: "cow",
         translation: "kot",
     },
     {
         _id: 4,
-        word: "cat",
+        word: "a",
         translation: "kot",
     },
     {
         _id: 5,
-        word: "cat",
+        word: "a",
         translation: "kot",
     }
 ];

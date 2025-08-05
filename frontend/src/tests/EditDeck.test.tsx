@@ -1,17 +1,16 @@
 import '@testing-library/jest-dom'
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import EditView from '../components/EditView/EditView';
+import EditDeck from '../components/EditView/EditDeck/EditDeck';
 import { Decks } from './mock/Decks.mock';
-import { cards } from './mock/Card.mock';
 
-describe('edit deck should work', () => {
+describe('should fetch cards for editing', () => {
 
     beforeEach(() => {
         render(
             <BrowserRouter>
-                <EditView />
+                <EditDeck />
             </BrowserRouter>
         );
     });
@@ -20,40 +19,51 @@ describe('edit deck should work', () => {
         vi.clearAllMocks();
     })
 
-    const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
-    const DECKS = import.meta.env.VITE_DECKS;
-    const CARDS = import.meta.env.VITE_CARDS;
+    const mockedDecks = Decks[0];
+    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({
+        json: () => Promise.resolve(mockedDecks)
+    })
+    ));
 
     localStorage.setItem("accessToken", "mocked-token");
-    const mockedDeck = Decks[0];
-    const mockedCards = cards;
-    vi.stubGlobal('fetch', vi.fn((url) => {
-        if (url === `${DB_ADDRESS}${CARDS}?search=undefined`) {
-            return Promise.resolve({
-                ok: true,
-                status: 200,
-                json: async () => ({ mockedCards }),
-            } as Response);
 
-        }
+    it("fetch the data", async () => {
+        expect(window.location.pathname).toBe('/')
 
-        if (url === `${DB_ADDRESS}${DECKS}undefined`) {
-            return Promise.resolve({
-                ok: true,
-                status: 201,
-                json: async () => ({ mockedDeck }),
-            } as Response);
-        }
+        await waitFor(() => {
+            expect(screen.getByText("Deck Name")).toBeInTheDocument()
+            expect(screen.getByText("Deck Description")).toBeInTheDocument()
+            expect(screen.getByText("Source Language")).toBeInTheDocument()
+            expect(screen.getByText("Translation Language")).toBeInTheDocument()
+            expect(screen.getByDisplayValue("Deck1")).toBeInTheDocument()
+            expect(screen.getByDisplayValue("Deck for testing purposes")).toBeInTheDocument()
+            expect(screen.queryByText("EDIT DECK")).not.toBeInTheDocument()
+        });
+    });
 
-        return Promise.reject(new Error('Unknown URL'));
-    }));
+    it("validate edit request", async () => {
+        await waitFor(() => {
+            let descriptionTextarea = screen.getByPlaceholderText("Deck to learn a new language");
+            let nameInput = screen.getByPlaceholderText("My Deck");
+            fireEvent.change(descriptionTextarea, { target: { value: 'This deck is for learning purposes' } });
+            fireEvent.change(nameInput, { target: { value: "Learning deck" } });
+            expect(screen.getByDisplayValue("This deck is for learning purposes")).toBeInTheDocument()
+            expect(screen.getByDisplayValue("Learning deck")).toBeInTheDocument()
+            const editButton = screen.getByText("EDIT DECK");
+            fireEvent.click(editButton);
 
-
-    it('edit deck data', () => {
-        expect(screen.getByText("Deck Name")).toBeInTheDocument();
-        expect(screen.getByText("Deck Description")).toBeInTheDocument();
-        expect(screen.getByText("Source Language")).toBeInTheDocument();
-        expect(screen.getByText("Translation Language")).toBeInTheDocument();
+            expect(fetch).toHaveBeenCalledWith(
+                expect.stringContaining('/api/decks/'),
+                expect.objectContaining({
+                    method: "PATCH",
+                    headers: expect.objectContaining({
+                        Authorization: expect.any(String),
+                        "Content-Type": 'application/json'
+                    }),
+                    body: expect.any(String)
+                })
+            );
+        });
     });
 
 })
