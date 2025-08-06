@@ -27,11 +27,11 @@ jobs:
         run: |
           cd frontend
           npm ci || npm install
-      - name: test frontend
+      - name: Run tests
         run: |
           cd frontend
           npm run test
-      - name: test frontend
+      - name: Test coverage
         run: |
           cd frontend
           npm run coverage
