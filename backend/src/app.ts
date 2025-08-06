@@ -65,7 +65,7 @@ app.post(LOGIN, async (req, res) => {
     }
 });
 
-function generateAccessToken(id: string) {
+export function generateAccessToken(id: string) {
     return JWT.sign({ id: id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15s" });
 }
 
@@ -82,7 +82,7 @@ app.get(USERS_BY_NICKNAME, async (req, res) => {
     }
 });
 
-async function saveRefreshToken(refreshToken: string) {
+export async function saveRefreshToken(refreshToken: string) {
     try {
         const newToken = new Token({ token: refreshToken });
         await newToken.save();
@@ -99,7 +99,7 @@ async function deleteRefreshToken(refreshToken: string) {
     }
 }
 
-async function isRefreshTokenValid(refreshToken: string) {
+export async function isRefreshTokenValid(refreshToken: string) {
     return await Token.exists({ token: refreshToken });
 }
 
