@@ -7,6 +7,7 @@ import Card from './models/Card';
 import User from './models/User';
 import cors from 'cors';
 import Token from './models/Token';
+import { authenticate } from './authenticationService';
 
 const DECKS = '/api/decks/';
 const DECK_BY_ID = '/api/decks/:id';
@@ -22,7 +23,6 @@ require('dotenv').config()
 const app = express();
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken')
-const SECRET_KEY: Secret = process.env.ACCESS_TOKEN_SECRET || "";
 
 interface CustomRequest extends Request {
     id?: string;
@@ -31,16 +31,6 @@ interface CustomRequest extends Request {
 
 app.use(express.json());
 app.use(cors());
-
-mongoose.connect(process.env.MONGO_URI!)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB error:', err));
-
-
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
 
 app.post(USERS, async (req, res) => {
     try {
@@ -91,21 +81,6 @@ app.get(USERS_BY_NICKNAME, async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
-const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-
-        if (!token) {
-            return res.status(401).json({ message: 'Please authenticate' });;
-        }
-        const decoded = jwt.verify(token, SECRET_KEY);
-        (req as CustomRequest).id = (decoded as any).id;
-        next();
-    } catch (err) {
-        res.status(401).send('Please authenticate');
-    }
-};
 
 async function saveRefreshToken(refreshToken: string) {
     try {
@@ -236,10 +211,9 @@ app.post(CARDS, authenticate, async (req, res) => {
     }
 });
 
-app.patch(CARDS + ':id', authenticate, async (req, res) => {
+app.patch(CARD_BY_ID, authenticate, async (req, res) => {
     const cardId = req.params.id;
     const updatedCard = req.body.updatedCard;
-
     try {
         const card = await Card.findByIdAndUpdate(cardId, updatedCard, { new: true });
         if (!card) {

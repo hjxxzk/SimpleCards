@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { cards } from './CardReviewService.mock'
+import { cards } from './mock/Card.mock'
 import { addCardToRepeatInRandomPlace } from '../services/CardReviewService'
 
 describe('add not remembered card to another review', () => {
@@ -8,7 +8,6 @@ describe('add not remembered card to another review', () => {
         const deckWithOnlyOneItem = cards.slice(0, 1);
         const notRememberedCard = deckWithOnlyOneItem[0]
         const adjustedDeck = addCardToRepeatInRandomPlace(notRememberedCard, deckWithOnlyOneItem)
-        console.log(adjustedDeck)
         expect(adjustedDeck).toHaveLength(2)
         expect(adjustedDeck[0]).toEqual(adjustedDeck[1])
     })

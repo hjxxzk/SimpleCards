@@ -84,7 +84,6 @@ function EditDeck() {
             translationLanguage !== editedDeck?.translationLanguage;
     }
 
-
     function handleDeckEdit() {
         if (isEverythingFilled()) {
             editDeck();

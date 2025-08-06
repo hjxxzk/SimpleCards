@@ -29,13 +29,13 @@ const Deck = (props: DeckProps) => {
     }
 
     return (
-        <div className={styles.deckContainer}>
+        <div className={styles.deckContainer} data-testid="deck">
             <div className={`${styles.deck} ${params.id === props._id.toString() ? 'border-amber-300 border-3' : ''}`} onClick={() => { navigate(REVIEW_DECK_PAGE) }} >
                 <div className={styles.deckHeader}>
                     <strong>{props.name}</strong>
                     <div className={styles.deckActions}>
-                        <Pencil className={styles.edit} color="gray" size={18} onClick={(event) => { event.stopPropagation(), navigate(EDIT_DECK_PAGE) }} />
-                        <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
+                        <Pencil className={styles.edit} color="gray" size={18} data-testid="pencil-icon" onClick={(event) => { event.stopPropagation(), navigate(EDIT_DECK_PAGE) }} />
+                        <Trash2 className={styles.delete} color="gray" size={18} data-testid="trash-icon" onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                     </div>
                 </div>
                 <hr className={styles.separator} />

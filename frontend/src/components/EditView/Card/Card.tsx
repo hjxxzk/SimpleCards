@@ -46,10 +46,10 @@ const Card = (props: CardProps) => {
     }
 
     return (
-        <div className={styles.cardContainer}>
+        <div className={styles.cardContainer} data-testid="card">
             <div className={`${styles.card} ${params?.card_id === props._id.toString() ? 'bg-amber-300' : ''}`} >
                 <div className={styles.cardHeader}>
-                    <Trash2 className={styles.delete} color="gray" size={18} onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
+                    <Trash2 className={styles.delete} color="gray" size={18} data-testid="trash-icon" onClick={(event) => { event.stopPropagation(), handleDeleteDeck() }} />
                 </div>
                 <p>{props.word}</p>
             </div>
