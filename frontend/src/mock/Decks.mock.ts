@@ -1,4 +1,4 @@
-import type { DeckProps } from "../../components/Bars/Deck/DeckProps.types"
+import type { DeckProps } from "../components/Bars/Deck/DeckProps.types"
 
 export const Decks: DeckProps[] = [
     {

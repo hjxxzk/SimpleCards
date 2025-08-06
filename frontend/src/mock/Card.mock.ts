@@ -1,4 +1,4 @@
-import type { CardProps } from "../../components/EditView/Card/CardProps.types";
+import type { CardProps } from "../components/EditView/Card/CardProps.types";
 
 export const cards: CardProps[] = [
     {

@@ -2,8 +2,8 @@ import '@testing-library/jest-dom'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import EditDeck from '../components/EditView/EditDeck/EditDeck';
-import { Decks } from './mock/Decks.mock';
+import EditDeck from './EditDeck';
+import { Decks } from '../../../mock/Decks.mock';
 
 describe('should fetch cards for editing', () => {
 

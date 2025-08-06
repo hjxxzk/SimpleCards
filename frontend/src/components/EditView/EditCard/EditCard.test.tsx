@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import EditCard from '../components/EditView/EditCard/EditCard';
-import type { CardProps } from '../components/EditView/Card/CardProps.types';
+import EditCard from './EditCard';
+import type { CardProps } from '../Card/CardProps.types';
 
 describe('should fetch cards for editing', () => {
 

@@ -2,9 +2,9 @@ import '@testing-library/jest-dom'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import Layout from '../Layout';
+import Layout from '../../../Layout';
 import { BrowserRouter } from 'react-router-dom';
-import { Decks } from './mock/Decks.mock';
+import { Decks } from '../../../mock/Decks.mock';
 
 describe("starting screen elements should load", () => {
 

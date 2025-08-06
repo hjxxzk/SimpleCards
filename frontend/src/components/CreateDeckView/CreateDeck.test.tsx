@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom'
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import CreateDeck from '../components/CreateDeckView/CreateDeckView.tsx'
+import CreateDeckView from './CreateDeckView';
 
 describe('CreateDeck component inputs test', () => {
 
     beforeEach(() => {
         render(
-            <CreateDeck />
+            <CreateDeckView />
         );
     });
 

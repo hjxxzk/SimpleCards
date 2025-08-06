@@ -2,8 +2,8 @@ import '@testing-library/jest-dom'
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import EditView from '../components/EditView/EditView';
-import type { CardProps } from '../components/EditView/Card/CardProps.types';
+import EditView from '../EditView';
+import type { CardProps } from '../Card/CardProps.types';
 
 describe('should prompt to add cards when no cards are added', () => {
 

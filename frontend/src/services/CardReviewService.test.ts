@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { cards } from './mock/Card.mock'
+import { cards } from '../mock/Card.mock'
 import { addCardToRepeatInRandomPlace } from '../services/CardReviewService'
 
 describe('add not remembered card to another review', () => {

@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import EditView from '../components/EditView/EditView';
-import { cards } from './mock/Card.mock';
-import type { CardProps } from '../components/EditView/Card/CardProps.types';
+import EditView from '../EditView';
+import { cards } from '../../../mock/Card.mock';
+import type { CardProps } from '../Card/CardProps.types';
 
 describe('should fetch cards for editing', () => {
 
