@@ -1,3 +1,4 @@
+import { refreshToken } from "../../services/AuthService";
 import { DecksList } from "./DecksList/DecksList";
 import { UserBar } from "./UserBar/UserBar";
 import { UserInfo } from "./UserInfo/UserInfo";
@@ -6,6 +7,7 @@ import { useStyles } from "./UserView.styles";
 const UserView = () => {
 
     const styles = useStyles()
+    refreshToken();
 
     return (
         <div className={styles.container}>

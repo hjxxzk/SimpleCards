@@ -7,15 +7,18 @@ import { addCardToRepeatInRandomPlace, findLastMatch, shuffleCards } from "../..
 import { useWindowSize } from 'react-use'
 import Confetti from 'react-confetti'
 import { Repeat } from "lucide-react";
+import type { DeckProps } from "../Bars/Deck/DeckProps.types";
 
 function ReviewView() {
 
     const DB_ADDRESS = import.meta.env.VITE_DB_ADDRESS;
+    const DECKS = import.meta.env.VITE_DECKS;
     const CARDS = import.meta.env.VITE_CARDS;
     const styles = useStyles();
     const params = useParams();
     const navigate = useNavigate();
     const [cards, setCards] = useState<CardProps[]>();
+    const [deck, setDeck] = useState<DeckProps>();
     const [fetchedCards, setfetchedCards] = useState<CardProps[]>();
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [areCongratulationsVisible, setAreCongratulationsVisible] = useState(false);
@@ -28,6 +31,7 @@ function ReviewView() {
         setIsReviewCompleated(false);
         setAreCongratulationsVisible(false);
         setCurrentCardIndex(0);
+        fetchNumberOfRepetitions();
     }, [params.id]);
 
     useEffect(() => {
@@ -56,13 +60,59 @@ function ReviewView() {
         setCards(shuffledCards);
     }
 
-    function handleRememberedCard(_id: number) {
+    async function handleRememberedCard(_id: number) {
         if (cards && currentCardIndex < cards.length - 1) {
             setCurrentCardIndex(currentCardIndex + 1);
         } else if (cards && currentCardIndex === cards.length - 1) {
-            setAreCongratulationsVisible(true);
-            setIsReviewCompleated(true);
+            await completeReview();
         }
+    }
+
+    async function completeReview() {
+        setAreCongratulationsVisible(true);
+        setIsReviewCompleated(true);
+        await increaseNumberOfRepetitions();
+    }
+
+    async function increaseNumberOfRepetitions() {
+        if (deck) {
+            const updatedDeck = {
+                name: deck?.name,
+                description: deck?.description,
+                sourceLanguage: deck?.sourceLanguage,
+                translationLanguage: deck?.translationLanguage,
+                numberOfRepetitions: Number(deck?.numberOfRepetitions) + 1,
+            };
+
+            await fetch(`${DB_ADDRESS}${DECKS}${params.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ updatedDeck })
+            })
+                .then(response => { response.json(), console.log(response.status) })
+                .catch(err => console.error('Error:', err));
+        }
+    }
+
+    async function fetchNumberOfRepetitions() {
+        await fetch(`${DB_ADDRESS}${DECKS}${params.id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem("accessToken")}` } })
+            .then(res => res.json())
+            .then(dane => {
+                setDeck({
+                    _id: dane._id,
+                    user_id: dane.user_id,
+                    name: dane.name,
+                    description: dane.description,
+                    sourceLanguage: dane.sourceLanguage,
+                    translationLanguage: dane.translationLanguage,
+                    numberOfRepetitions: dane.numberOfRepetitions
+                })
+            }
+            )
+            .catch(err => console.error('Error:', err));
     }
 
     function handleNotRememberedCard(_id: number) {

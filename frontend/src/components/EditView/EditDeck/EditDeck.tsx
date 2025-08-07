@@ -41,7 +41,8 @@ function EditDeck() {
                         name: dane.name,
                         description: dane.description,
                         sourceLanguage: dane.sourceLanguage,
-                        translationLanguage: dane.translationLanguage
+                        translationLanguage: dane.translationLanguage,
+                        numberOfRepetitions: dane.numberOfRepetitions
                     }),
                         setDeckName(dane.name),
                         setDeckDescription(dane.description),

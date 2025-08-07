@@ -4,7 +4,7 @@ import NewElement from "../NewElement/NewElement";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchNewToken, refreshToken } from '../../../services/AuthService';
+import { fetchNewToken } from '../../../services/AuthService';
 
 const Sidebar = () => {
 
@@ -91,6 +91,7 @@ const Sidebar = () => {
                         translationLanguage={deck.translationLanguage}
                         user_id={deck.user_id}
                         deleteDeck={handleDeleteDeck}
+                        numberOfRepetitions={deck.numberOfRepetitions}
                     />
                 ))}
                 {!decks && <p className={styles.text}>Start by adding your first deck!</p>}

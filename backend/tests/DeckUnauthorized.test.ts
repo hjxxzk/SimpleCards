@@ -58,6 +58,7 @@ describe('Test Unauthorized CRUD for Deck', () => {
                     description: "Deck not for learning purposes",
                     sourceLanguage: "en",
                     translationLanguage: "pl",
+                    numberOfRepetitions: "0"
                 }
             });
         expect(response.status).toBe(401);

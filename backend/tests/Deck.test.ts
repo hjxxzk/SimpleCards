@@ -46,6 +46,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
 
         expect(response.status).toBe(201);
@@ -59,6 +60,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
 
         expect(secondResponse.status).toBe(201);
@@ -84,6 +86,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
         const response = await request(app)
             .delete(`/api/decks/${postResponse.body.id}`);
@@ -106,6 +109,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
         const response = await request(app)
             .delete(`/api/decks/6666`);
@@ -123,6 +127,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
         const response = await request(app)
             .get(`/api/decks/${postResponse.body.id}`);
@@ -139,6 +144,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
         const response = await request(app)
             .get('/api/decks/6666');
@@ -155,6 +161,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
 
         const response = await request(app)
@@ -166,6 +173,7 @@ describe('Test CRUD for Deck', () => {
                     description: "Deck not for learning purposes",
                     sourceLanguage: "en",
                     translationLanguage: "pl",
+                    numberOfRepetitions: "0"
                 }
             });
         expect(response.status).toBe(200);
@@ -186,6 +194,7 @@ describe('Test CRUD for Deck', () => {
                 description: "Deck for testing purposes",
                 sourceLanguage: "en",
                 translationLanguage: "pl",
+                numberOfRepetitions: "0"
             });
 
         const response = await request(app)
