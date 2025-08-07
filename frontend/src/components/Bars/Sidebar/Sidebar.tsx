@@ -16,7 +16,6 @@ const Sidebar = () => {
     const styles = useStyles();
     const navigate = useNavigate()
     const params = useParams();
-    refreshToken();
 
     function handleDeleteDeck(deckId: number) {
         if (decks) {
