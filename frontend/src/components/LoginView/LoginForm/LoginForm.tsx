@@ -41,7 +41,6 @@ export const LoginForm = () => {
         }
     }
 
-
     function areBothFieldsFilled() {
         return nickname && password;
     }
@@ -58,10 +57,6 @@ export const LoginForm = () => {
                 <input name="password" type="password" className={styles.input} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button className={styles.logInButton} onClick={() => { handleLogIn() }}>LOG IN</button>
-            <div className={styles.checkBoxContainer}>
-                <input name="stayLogged" type="checkBox" className={styles.pointer} onChange={(e) => setPassword(e.target.value)} />
-                <p>Stay logged in?</p>
-            </div>
             <u className={styles.registrationForwarding} onClick={() => { navigate(REGISTER_VIEW) }}>I don't have an account yet</u>
         </div>
     );

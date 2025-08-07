@@ -4,7 +4,7 @@ import NewElement from "../NewElement/NewElement";
 import type { DeckProps } from "../Deck/DeckProps.types";
 import Deck from "../Deck/Deck";
 import { useNavigate, useParams } from 'react-router-dom';
-import { refreshToken } from '../../../services/AuthService';
+import { fetchNewToken, refreshToken } from '../../../services/AuthService';
 
 const Sidebar = () => {
 
@@ -49,16 +49,30 @@ const Sidebar = () => {
     }
 
     useEffect(() => {
-        fetch(`${DB_ADDRESS}${DECKS}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
-                'Content-Type': 'application/json'
+        const fetchData = async () => {
+            try {
+                await fetchNewToken();
+
+                const response = await fetch(`${DB_ADDRESS}${DECKS}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setDecks(data.reverse());
+            } catch (error) {
+                console.error('Error fetching decks:', error);
             }
-        })
-            .then(res => res.json())
-            .then(dane => setDecks(dane.reverse()))
-            .catch(err => console.error('Error:', err));
+        };
+
+        fetchData();
     }, []);
 
 

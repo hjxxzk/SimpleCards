@@ -1,8 +1,5 @@
-import mongoose from 'mongoose';
 import jwt, { Secret } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-
-const SECRET_KEY: Secret = process.env.ACCESS_TOKEN_SECRET || "";
 
 interface CustomRequest extends Request {
     id?: string;
@@ -10,11 +7,13 @@ interface CustomRequest extends Request {
 }
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
+
+    const SECRET_KEY: Secret = process.env.ACCESS_TOKEN_SECRET || "";
+
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
-
         if (!token) {
-            return res.status(401).json({ message: 'Please authenticate' });;
+            return res.status(401).json({ message: 'Please authenticate (no tekn provided)' });;
         }
         const decoded = jwt.verify(token, SECRET_KEY);
         (req as CustomRequest).id = (decoded as any).id;
