@@ -96,7 +96,8 @@ describe('CreateDeck component inputs test', () => {
                     name: "My Awesome Deck",
                     description: "This deck is for testing purposes.",
                     sourceLanguage: "en",
-                    translationLanguage: "pl"
+                    translationLanguage: "pl",
+                    numberOfRepetitions: 0,
                 })
             },
         )

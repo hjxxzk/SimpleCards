@@ -95,7 +95,7 @@ const UserView = () => {
         <div className={styles.container}>
             <UserBar />
             <UserInfo numberOfRepetitions={countRepeatedDecks()} numberOfCardsLearned={countCardsLearned()} />
-            <div className="max-w-4/5 items-center sm:min-w-1/2 mt-30 p-4 md:p-10 flex flex-col rounded-lg bg-neutral-200 text-lg sm:items-start ">
+            <div className=" overflow-auto scrollbar-yellow w-4/5 sm:min-w-1/2 mt-30 p-4 md:p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 rounded-lg bg-neutral-200 text-lg">
                 {decks && decks.map((deck) => (
                     <DeckInfo
                         key={deck._id}

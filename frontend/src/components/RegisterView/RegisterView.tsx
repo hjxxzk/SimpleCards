@@ -71,7 +71,8 @@ export const RegisterView = () => {
         })
             .then(response => response.json())
             .then(data => {
-                localStorage.setItem("accessToken", data.accessToken),
+                localStorage.setItem("nickname", nickname),
+                    localStorage.setItem("accessToken", data.accessToken),
                     localStorage.setItem("refreshToken", data.refreshToken)
             })
             .then(() => navigate(HOME_PAGE));

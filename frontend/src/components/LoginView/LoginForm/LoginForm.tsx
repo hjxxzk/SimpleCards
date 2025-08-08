@@ -35,6 +35,7 @@ export const LoginForm = () => {
 
         if (response.status === LOGGED_IN_SUCCESSFULLY) {
             const data = await response.json();
+            localStorage.setItem("nickname", nickname);
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
             navigate("/");
