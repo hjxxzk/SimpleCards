@@ -29,7 +29,6 @@ export const UserBar = () => {
                 refreshToken: refreshToken
             })
         });
-
     }
 
     return (
