@@ -58,7 +58,6 @@ const UserView = () => {
                 console.error('Error:', err);
             }
         }
-
         fetchDecks();
 
     }, []);
