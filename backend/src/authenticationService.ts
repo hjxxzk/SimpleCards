@@ -13,7 +13,7 @@ export const authenticate = async (req: Request, res: Response, next: NextFuncti
     try {
         const token = req.header('Authorization')?.replace('Bearer ', '');
         if (!token) {
-            return res.status(401).json({ message: 'Please authenticate (no tekn provided)' });;
+            return res.status(401).json({ message: 'Please authenticate (no token provided)' });;
         }
         const decoded = jwt.verify(token, SECRET_KEY);
         (req as CustomRequest).id = (decoded as any).id;
