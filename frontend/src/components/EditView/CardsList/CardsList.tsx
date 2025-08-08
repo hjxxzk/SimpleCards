@@ -31,14 +31,14 @@ const CardsList = (props: CardListProps) => {
         }
     }, [match.matches]);
 
-    function handleDeleteCard(cardId: number) {
+    function handleDeleteCard(cardId: string) {
         if (props.cards) {
             props.deleteCard(cardId);
             requestDelete(cardId);
         }
     }
 
-    async function requestDelete(cardId: number) {
+    async function requestDelete(cardId: string) {
         await fetch(`${DB_ADDRESS}${CARDS}/${cardId}`, {
             method: 'DELETE',
             headers: {
@@ -63,6 +63,7 @@ const CardsList = (props: CardListProps) => {
                             word={card.word}
                             translation={card.translation}
                             deleteCard={handleDeleteCard}
+                            isRemembered={card.isRemembered}
                         />
                     </div>
                 ))}

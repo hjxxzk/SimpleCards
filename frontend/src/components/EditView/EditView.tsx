@@ -19,7 +19,7 @@ function EditView() {
     const [editedCard, setEditedCard] = useState<CardProps>();
     const [isNewCardCreated, setIsNewCardCreated] = useState(false);
 
-    function deleteCard(cardId: number) {
+    function deleteCard(cardId: string) {
         if (cards) {
             setCards(cards.filter(card => card._id !== cardId));
         }
@@ -29,7 +29,7 @@ function EditView() {
         navigate(`/edit/${params.id}/${CREATE}`);
     }
 
-    function chooseCard(cardId: number) {
+    function chooseCard(cardId: string) {
         setEditedCard(cards?.find(card => card._id === cardId));
     }
 

@@ -35,6 +35,7 @@ const CreateCard = (props: CreateCardProps) => {
                 word: wordChanged,
                 translation: translationChanged,
                 deck_id: props.deck_id,
+                isRemembered: false,
             }),
         })
             .then(res => res.json())

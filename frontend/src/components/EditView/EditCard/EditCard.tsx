@@ -54,7 +54,8 @@ const EditCard = (props: EditCardProps) => {
             _id: props.card?._id,
             word: wordChanged,
             translation: translationChanged,
-            deck_id: props.card?.deck_id
+            deck_id: props.card?.deck_id,
+            isRemembered: props.card?.isRemembered
         }
 
         await fetch(`${DB_ADDRESS}${CARDS}/${props.card?._id}`, {
@@ -67,7 +68,6 @@ const EditCard = (props: EditCardProps) => {
         })
             .then(res => res.json())
             .catch(err => console.error('Error:', err));
-
     }
 
 

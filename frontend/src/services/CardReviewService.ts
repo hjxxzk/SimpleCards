@@ -10,7 +10,7 @@ export function shuffleCards(cards: CardProps[]) {
     return cards;
 }
 
-export function findLastMatch(card_id: number, cards: CardProps[]): CardProps | null {
+export function findLastMatch(card_id: string, cards: CardProps[]): CardProps | null {
     for (let i = cards.length - 1; i >= 0; i--) {
         if (cards[i]._id === card_id) {
             return cards[i];

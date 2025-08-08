@@ -37,7 +37,7 @@ function ReviewView() {
     useEffect(() => {
         const timeout = setTimeout(() => {
             setAreCongratulationsVisible(false);
-        }, 10000);
+        }, 5000);
 
         return () => clearTimeout(timeout);
     }, [areCongratulationsVisible]);
@@ -48,7 +48,7 @@ function ReviewView() {
             const fetchedCards = await res.json();
             if (fetchedCards) {
                 setfetchedCards(fetchedCards);
-                prepareCards(fetchedCards)
+                prepareCards(fetchedCards);
             }
         } catch (err) {
             console.error('Error:', err);
@@ -60,7 +60,7 @@ function ReviewView() {
         setCards(shuffledCards);
     }
 
-    async function handleRememberedCard(_id: number) {
+    async function handleRememberedCard(_id: string) {
         if (cards && currentCardIndex < cards.length - 1) {
             setCurrentCardIndex(currentCardIndex + 1);
         } else if (cards && currentCardIndex === cards.length - 1) {
@@ -72,6 +72,63 @@ function ReviewView() {
         setAreCongratulationsVisible(true);
         setIsReviewCompleated(true);
         await increaseNumberOfRepetitions();
+        await saveRememberedCards();
+    }
+
+    function findCardToUpdate(id: string): CardProps | undefined {
+        return cards?.find((card) => card._id === id);
+    }
+
+    function groupCardsByCount() {
+        return cards?.reduce<Record<string, number>>((accumulator, currentCard) => {
+            const key = currentCard._id;
+            accumulator[key] = (accumulator[key] || 0) + 1;
+            return accumulator;
+        }, {});
+    }
+
+    async function saveRememberedCards() {
+        const groupedByCardId = groupCardsByCount();
+        if (groupedByCardId) {
+            Object.entries(groupedByCardId).forEach(([cardId, count]) => {
+                const card = findCardToUpdate(cardId);
+                if (card) {
+                    count > 1 ? saveAsNotRemembered(card) : saveAsRemembered(card);
+                }
+            });
+        }
+    }
+
+    async function saveAsRemembered(updatedCard: CardProps) {
+        if (!updatedCard.isRemembered) {
+            updatedCard.isRemembered = true;
+            await fetch(`${DB_ADDRESS}${CARDS}/${updatedCard._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ updatedCard }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error('Error:', err));
+        }
+    }
+
+    async function saveAsNotRemembered(updatedCard: CardProps) {
+        if (updatedCard.isRemembered) {
+            updatedCard.isRemembered = false;
+            await fetch(`${DB_ADDRESS}${CARDS}/${updatedCard._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ updatedCard }),
+            })
+                .then(res => res.json())
+                .catch(err => console.error('Error:', err));
+        }
     }
 
     async function increaseNumberOfRepetitions() {
@@ -92,7 +149,7 @@ function ReviewView() {
                 },
                 body: JSON.stringify({ updatedDeck })
             })
-                .then(response => { response.json(), console.log(response.status) })
+                .then(response => { response.json() })
                 .catch(err => console.error('Error:', err));
         }
     }
@@ -115,7 +172,7 @@ function ReviewView() {
             .catch(err => console.error('Error:', err));
     }
 
-    function handleNotRememberedCard(_id: number) {
+    function handleNotRememberedCard(_id: string) {
         if (cards) {
             const cardToBeRepeated = findLastMatch(_id, cards);
             if (cardToBeRepeated) {
@@ -137,7 +194,9 @@ function ReviewView() {
     return (
         <div className={styles.mainContainer}>
             {(cards?.length && !isReviewCompleted) ? <ReviewCard _id={cards[currentCardIndex]._id} word={cards[currentCardIndex].word} translation={cards[currentCardIndex].translation} handleYes={handleRememberedCard} handleNo={handleNotRememberedCard} /> : null}
-            {isReviewCompleted && !areCongratulationsVisible && <div className={styles.repeatButton} onClick={() => repeatReview()}><Repeat color="gray" size={35} /></div>}
+            {isReviewCompleted && !areCongratulationsVisible && <div className={styles.repeatButton} onClick={() => repeatReview()}>
+                <Repeat color="gray" size={35} />
+            </div>}
             {(params.id && cards?.length === 0) && <div className={styles.noContentMessage}>Start by adding cards to your deck!<button className={styles.addCardsButton} onClick={() => { navigate(EDIT_DECK_SCREEN) }}>Add cards</button></div>}
             {!params.id && <div className={styles.noContentMessage}>Start by choosing a deck or creating a new one!</div>}
 
