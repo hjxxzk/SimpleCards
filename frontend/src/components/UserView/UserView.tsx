@@ -85,7 +85,7 @@ const UserView = () => {
                     }
                 }
             });
-            const knownPercent = deckCount > 0 ? (knownCount / deckCount * 100).toFixed(1) + "%" : "N/A";
+            const knownPercent = deckCount > 0 ? (knownCount / deckCount * 100).toFixed(0) + "%" : "N/A";
             decksMap.set(deck_id, knownPercent);
         });
         setDecksData(decksMap);
@@ -95,8 +95,8 @@ const UserView = () => {
         <div className={styles.container}>
             <UserBar />
             <UserInfo numberOfRepetitions={countRepeatedDecks()} numberOfCardsLearned={countCardsLearned()} />
-            <div className=" overflow-auto scrollbar-yellow w-4/5 sm:min-w-1/2 mt-30 p-4 md:p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 rounded-lg bg-neutral-200 text-lg">
-                {decks && decks.map((deck) => (
+            {(decks ?? []).length > 0 && <div className={styles.decksList}>
+                {decks?.map((deck) => (
                     <DeckInfo
                         key={deck._id}
                         _id={deck._id}
@@ -109,7 +109,7 @@ const UserView = () => {
                         knownPercent={deckData.get(deck._id)}
                     />
                 ))}
-            </div>
+            </div>}
         </div>
     );
 }

@@ -19,6 +19,7 @@ function ReviewView() {
     const navigate = useNavigate();
     const [cards, setCards] = useState<CardProps[]>();
     const [deck, setDeck] = useState<DeckProps>();
+    const [cardsStats, setCardStats] = useState<Record<string, number>>();
     const [fetchedCards, setfetchedCards] = useState<CardProps[]>();
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
     const [areCongratulationsVisible, setAreCongratulationsVisible] = useState(false);
@@ -89,6 +90,7 @@ function ReviewView() {
 
     async function saveRememberedCards() {
         const groupedByCardId = groupCardsByCount();
+        setCardStats(groupedByCardId);
         if (groupedByCardId) {
             Object.entries(groupedByCardId).forEach(([cardId, count]) => {
                 const card = findCardToUpdate(cardId);
@@ -191,24 +193,40 @@ function ReviewView() {
         }
     }
 
+    function findName(id: string): string {
+        return cards?.find((card) => card._id === id)?.word || "";
+    }
+
     return (
         <div className={styles.mainContainer}>
             {(cards?.length && !isReviewCompleted) ? <ReviewCard _id={cards[currentCardIndex]._id} word={cards[currentCardIndex].word} translation={cards[currentCardIndex].translation} handleYes={handleRememberedCard} handleNo={handleNotRememberedCard} /> : null}
-            {isReviewCompleted && !areCongratulationsVisible && <div className={styles.repeatButton} onClick={() => repeatReview()}>
-                <Repeat color="gray" size={35} />
-            </div>}
+            {isReviewCompleted && !areCongratulationsVisible &&
+                <div className={styles.summaryContainer}>
+                    <div className={styles.repeatButton} onClick={() => repeatReview()}>
+                        <Repeat color="gray" size={35} />
+                    </div>
+                    <div className={styles.summaryContent}>
+                        <p className={styles.text}>Your results: </p>
+                        {cardsStats && Object.entries(cardsStats).map(([id, repetitions]) => (
+                            <div className={styles.cardResult} key={id}>🃏 {findName(id)}: {repetitions} {repetitions === 1 ? "repetition" : "repetitions"}</div>
+                        ))}
+                        <p className={`${styles.text} text-center pt-5`}>Good job!</p>
+                    </div>
+                </div>
+            }
             {(params.id && cards?.length === 0) && <div className={styles.noContentMessage}>Start by adding cards to your deck!<button className={styles.addCardsButton} onClick={() => { navigate(EDIT_DECK_SCREEN) }}>Add cards</button></div>}
             {!params.id && <div className={styles.noContentMessage}>Start by choosing a deck or creating a new one!</div>}
 
-            {areCongratulationsVisible && <>
-                <Confetti
-                    width={width}
-                    height={height}
-                />
-                <div className={styles.congratulations}>Congratulations!</div>
-            </>
+            {
+                areCongratulationsVisible && <>
+                    <Confetti
+                        width={width}
+                        height={height}
+                    />
+                    <div className={styles.congratulations}>Congratulations!</div>
+                </>
             }
-        </div>
+        </div >
     )
 }
 
