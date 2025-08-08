@@ -20,7 +20,6 @@ describe("starting screen elements should load", () => {
     });
 
     const mockedDecks = Decks.sort((a, b) => a._id - b._id);
-    console.log(mockedDecks)
     vi.stubGlobal('fetch', vi.fn((url: string) => {
         if (url.includes('/api/decks/undefined')) {
             return Promise.resolve({
