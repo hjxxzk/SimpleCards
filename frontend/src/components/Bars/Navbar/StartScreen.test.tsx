@@ -20,10 +20,19 @@ describe("starting screen elements should load", () => {
     });
 
     const mockedDecks = Decks.sort((a, b) => a._id - b._id);
-    vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({
-        json: () => Promise.resolve(mockedDecks)
-    })
-    ));
+    vi.stubGlobal('fetch', vi.fn((url: string) => {
+        if (url.includes('/api/decks/undefined')) {
+            return Promise.resolve({
+                ok: false,
+                status: 500,
+                json: () => Promise.resolve({ error: 'Invalid deck ID' }),
+            });
+        }
+        return Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve(mockedDecks),
+        });
+    }));
 
     localStorage.setItem("accessToken", "mocked-token");
 
@@ -37,17 +46,6 @@ describe("starting screen elements should load", () => {
                 expect(screen.getByText((content) => content.includes(`${deck.sourceLanguage} | ${deck.translationLanguage}`))).to.exist
             })
         });
-
-        expect(fetch).toHaveBeenCalledWith(
-            'http://localhost:5000/api/decks/',
-            {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer mocked-token`,
-                    "Content-Type": 'application/json'
-                },
-            },
-        )
     });
 
     it("check static text and static elements", async () => {

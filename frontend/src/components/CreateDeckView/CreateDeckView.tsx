@@ -63,7 +63,8 @@ function EditView() {
                     name: deckName,
                     description: deckDescription,
                     sourceLanguage: sourceLanguage,
-                    translationLanguage: translationLanguage
+                    translationLanguage: translationLanguage,
+                    numberOfRepetitions: 0,
                 })
             })
                 .then(response => response.json())

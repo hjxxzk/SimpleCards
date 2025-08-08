@@ -31,6 +31,7 @@ describe('Test CRUD for Card', () => {
             .send({
                 word: "cat",
                 translation: "kot",
+                isRemembered: false
             });
 
         expect(response.status).toBe(500);
@@ -43,6 +44,7 @@ describe('Test CRUD for Card', () => {
                 word: "cat",
                 translation: "kot",
                 deck_id: "1",
+                isRemembered: false
             });
 
         expect(response.status).toBe(201);
@@ -54,6 +56,7 @@ describe('Test CRUD for Card', () => {
                 word: "dog",
                 translation: "pies",
                 deck_id: "1",
+                isRemembered: false
             });
 
         expect(secondResponse.status).toBe(201);
@@ -78,6 +81,7 @@ describe('Test CRUD for Card', () => {
                 word: "cow",
                 translation: "krowa",
                 deck_id: "1",
+                isRemembered: false
             });
 
         const response = await request(app)
@@ -99,6 +103,7 @@ describe('Test CRUD for Card', () => {
                 word: "cow",
                 translation: "krowa",
                 deck_id: "1",
+                isRemembered: false
             });
         const response = await request(app)
             .delete(`/api/cards/6666`);
@@ -114,6 +119,7 @@ describe('Test CRUD for Card', () => {
                 word: "cow",
                 translation: "krowa",
                 deck_id: "1",
+                isRemembered: false
             });
         const response = await request(app)
             .patch(`/api/cards/${postResponse.body.id}`)
@@ -122,6 +128,7 @@ describe('Test CRUD for Card', () => {
                     word: "donkey",
                     translation: "osiołek",
                     deck_id: "1",
+                    isRemembered: false
                 }
             });
         expect(response.status).toBe(200);
@@ -141,6 +148,7 @@ describe('Test CRUD for Card', () => {
                 word: "cow",
                 translation: "krowa",
                 deck_id: "1",
+                isRemembered: false
             });
         const response = await request(app)
             .patch(`/api/cards/6666`)

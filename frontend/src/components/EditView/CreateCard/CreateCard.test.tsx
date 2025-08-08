@@ -55,7 +55,8 @@ describe('should fetch cards for editing', () => {
                     body: JSON.stringify({
                         word: "cat",
                         translation: "kot",
-                        deck_id: "1"
+                        deck_id: "1",
+                        isRemembered: false
                     })
                 },
             )

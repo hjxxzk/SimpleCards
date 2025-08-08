@@ -1,7 +1,8 @@
 export interface CardProps {
-    _id: number;
+    _id: string;
     word: string;
     translation: string;
+    isRemembered: boolean,
     deck_id?: number;
-    deleteCard?: (cardId: number) => void;
+    deleteCard?: (cardId: string) => void;
 }

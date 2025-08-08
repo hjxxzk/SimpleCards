@@ -1,7 +1,7 @@
 export interface ReviewCardProps {
-    _id: number;
+    _id: string;
     word: string;
     translation: string;
-    handleYes: (_id: number) => void,
-    handleNo: (_id: number) => void,
+    handleYes: (_id: string) => void,
+    handleNo: (_id: string) => void,
 }

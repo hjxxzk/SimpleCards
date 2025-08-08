@@ -35,12 +35,12 @@ export const LoginForm = () => {
 
         if (response.status === LOGGED_IN_SUCCESSFULLY) {
             const data = await response.json();
+            localStorage.setItem("nickname", nickname);
             localStorage.setItem("accessToken", data.accessToken);
             localStorage.setItem("refreshToken", data.refreshToken);
             navigate("/");
         }
     }
-
 
     function areBothFieldsFilled() {
         return nickname && password;
@@ -58,10 +58,6 @@ export const LoginForm = () => {
                 <input name="password" type="password" className={styles.input} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <button className={styles.logInButton} onClick={() => { handleLogIn() }}>LOG IN</button>
-            <div className={styles.checkBoxContainer}>
-                <input name="stayLogged" type="checkBox" className={styles.pointer} onChange={(e) => setPassword(e.target.value)} />
-                <p>Stay logged in?</p>
-            </div>
             <u className={styles.registrationForwarding} onClick={() => { navigate(REGISTER_VIEW) }}>I don't have an account yet</u>
         </div>
     );

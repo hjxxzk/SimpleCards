@@ -20,6 +20,10 @@ const deckSchema = new mangoose.Schema({
     translationLanguage: {
         type: String,
         required: true,
+    },
+    numberOfRepetitions: {
+        type: String,
+        required: true,
     }
 });
 

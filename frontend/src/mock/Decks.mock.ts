@@ -7,7 +7,8 @@ export const Decks: DeckProps[] = [
         name: "Deck1",
         description: "Deck for testing purposes",
         sourceLanguage: "en",
-        translationLanguage: "pl"
+        translationLanguage: "pl",
+        numberOfRepetitions: 0
     },
     {
         _id: 2,
@@ -15,7 +16,8 @@ export const Decks: DeckProps[] = [
         name: "Deck2",
         description: "Second deck for testing purposes",
         sourceLanguage: "es",
-        translationLanguage: "pl"
+        translationLanguage: "pl",
+        numberOfRepetitions: 0
     },
     {
         _id: 3,
@@ -23,6 +25,7 @@ export const Decks: DeckProps[] = [
         name: "Deck3",
         description: "Third deck for testing purposes",
         sourceLanguage: "fr",
-        translationLanguage: "pl"
+        translationLanguage: "pl",
+        numberOfRepetitions: 0
     }
 ]

@@ -12,6 +12,10 @@ const cardSchema = new mangoose.Schema({
     deck_id: {
         type: String,
         required: true,
+    },
+    isRemembered: {
+        type: Boolean,
+        required: true,
     }
 })
 

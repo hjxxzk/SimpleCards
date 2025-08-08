@@ -7,9 +7,10 @@ import type { CardProps } from '../Card/CardProps.types';
 describe('should fetch cards for editing', () => {
 
     const card: CardProps = {
-        _id: 1,
+        _id: "1",
         word: "cat",
         translation: "kot",
+        isRemembered: false
     }
 
 
@@ -54,9 +55,10 @@ describe('should fetch cards for editing', () => {
             fireEvent.click(saveButton);
 
             const updatedCard: CardProps = {
-                _id: 1,
+                _id: "1",
                 word: "kitty",
                 translation: "kotek",
+                isRemembered: false
             }
 
             expect(fetchSpy).toHaveBeenCalled();

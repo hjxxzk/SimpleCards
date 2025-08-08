@@ -5,5 +5,7 @@ export interface DeckProps {
     description: string;
     sourceLanguage: string;
     translationLanguage: string;
+    numberOfRepetitions: number,
+    knownPercent?: string;
     deleteDeck?: (deckId: number) => void;
 }

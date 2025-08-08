@@ -1,7 +1,6 @@
 import express from 'express';
-import mongoose from 'mongoose';
-import jwt, { Secret } from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import { Request } from 'express';
 import Deck from './models/Deck';
 import Card from './models/Card';
 import User from './models/User';
@@ -160,13 +159,14 @@ app.delete(DECK_BY_ID, authenticate, async (req, res) => {
 app.post(DECKS, authenticate, async (req, res) => {
     try {
         const user_id = (req as CustomRequest).id;
-        const { name, description, sourceLanguage, translationLanguage } = req.body;
+        const { name, description, sourceLanguage, translationLanguage, numberOfRepetitions } = req.body;
         const newDeck = new Deck({
             name,
             description,
             sourceLanguage,
             translationLanguage,
-            user_id
+            user_id,
+            numberOfRepetitions
         }
         );
         const savedDeck = await newDeck.save()
